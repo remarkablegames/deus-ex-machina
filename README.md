@@ -4,14 +4,14 @@
 
 # Phaser Platformer
 
-[![release](https://img.shields.io/github/v/release/remarkablegames/phaser-platformer)](https://github.com/remarkablegames/phaser-platformer/releases)
-[![build](https://github.com/remarkablegames/phaser-platformer/actions/workflows/build.yml/badge.svg)](https://github.com/remarkablegames/phaser-platformer/actions/workflows/build.yml)
+[![release](https://img.shields.io/github/v/release/remarkablegames/deus-ex-machina)](https://github.com/remarkablegames/deus-ex-machina/releases)
+[![build](https://github.com/remarkablegames/deus-ex-machina/actions/workflows/build.yml/badge.svg)](https://github.com/remarkablegames/deus-ex-machina/actions/workflows/build.yml)
 
-<kbd>phaser-platformer</kbd> is a template for making [Phaser](https://phaser.io/) platformer games. The template is inspired by [`phaser-3-tilemap-blog-posts`](https://github.com/mikewesthad/phaser-3-tilemap-blog-posts/tree/master/examples/post-2) (read the [Medium story](https://itnext.io/3d68e73d494a)).
+<kbd>deus-ex-machina</kbd> is a template for making [Phaser](https://phaser.io/) platformer games. The template is inspired by [`phaser-3-tilemap-blog-posts`](https://github.com/mikewesthad/phaser-3-tilemap-blog-posts/tree/master/examples/post-2) (read the [Medium story](https://itnext.io/3d68e73d494a)).
 
 Play the game on:
 
-- [remarkablegames](https://remarkablegames.org/phaser-platformer/)
+- [remarkablegames](https://remarkablegames.org/deus-ex-machina/)
 
 ## Prerequisites
 
@@ -26,8 +26,8 @@ brew install nvm
 Clone the repository:
 
 ```sh
-git clone https://github.com/remarkablegames/phaser-platformer.git
-cd phaser-platformer
+git clone https://github.com/remarkablegames/deus-ex-machina.git
+cd deus-ex-machina
 ```
 
 Install the dependencies:
@@ -39,7 +39,7 @@ npm install
 Rename the project:
 
 ```sh
-git grep -l phaser-platformer | xargs sed -i '' -e 's/phaser-platformer/my-game/g'
+git grep -l deus-ex-machina | xargs sed -i '' -e 's/deus-ex-machina/my-game/g'
 ```
 
 ```sh

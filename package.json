@@ -1,5 +1,5 @@
 {
-  "name": "phaser-platformer",
+  "name": "deus-ex-machina",
   "private": true,
   "version": "1.0.0-alpha",
   "type": "module",
@@ -14,7 +14,7 @@
     "preview": "vite preview",
     "start": "vite --open"
   },
-  "homepage": "https://remarkablegames.org/phaser-platformer/",
+  "homepage": "https://remarkablegames.org/deus-ex-machina/",
   "dependencies": {
     "phaser": "3.90.0",
     "phaser-jsx": "0.14.1"
