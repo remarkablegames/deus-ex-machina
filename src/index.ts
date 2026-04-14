@@ -8,7 +8,7 @@ import * as scenes from './scenes';
 new Game({
   width: 1200, // 1024
   height: 600, // 768
-  title: 'Phaser Platformer',
+  title: 'Deus Ex Machina',
   url: import.meta.env.VITE_APP_HOMEPAGE,
   version: import.meta.env.VITE_APP_VERSION,
   scene: [

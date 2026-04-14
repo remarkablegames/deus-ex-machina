@@ -1,13 +1,11 @@
 <p align="center">
-  <img src="public/logo192.png" alt="Phaser Platformer">
+  <img src="public/logo192.png" alt="Deus Ex Machina">
 </p>
 
-# Phaser Platformer
+# Deus Ex Machina
 
 [![release](https://img.shields.io/github/v/release/remarkablegames/deus-ex-machina)](https://github.com/remarkablegames/deus-ex-machina/releases)
 [![build](https://github.com/remarkablegames/deus-ex-machina/actions/workflows/build.yml/badge.svg)](https://github.com/remarkablegames/deus-ex-machina/actions/workflows/build.yml)
-
-<kbd>deus-ex-machina</kbd> is a template for making [Phaser](https://phaser.io/) platformer games. The template is inspired by [`phaser-3-tilemap-blog-posts`](https://github.com/mikewesthad/phaser-3-tilemap-blog-posts/tree/master/examples/post-2) (read the [Medium story](https://itnext.io/3d68e73d494a)).
 
 Play the game on:
 
@@ -36,24 +34,10 @@ Install the dependencies:
 npm install
 ```
 
-Rename the project:
-
-```sh
-git grep -l deus-ex-machina | xargs sed -i '' -e 's/deus-ex-machina/my-game/g'
-```
-
-```sh
-git grep -l 'Phaser Platformer' | xargs sed -i '' -e 's/Phaser Platformer/My Game/g'
-```
-
 Update the files:
 
-- [ ] `README.md`
-- [ ] `index.html`
-- [ ] `package.json`
 - [ ] `public/*.png`
 - [ ] `public/manifest.webmanifest`
-- [ ] `src/index.ts`
 
 ## Environment Variables
 

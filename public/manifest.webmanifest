@@ -1,7 +1,7 @@
 {
-  "name": "Phaser Platformer",
-  "short_name": "Phaser Platformer",
-  "description": "Phaser Platformer",
+  "name": "Deus Ex Machina",
+  "short_name": "Deus Ex Machina",
+  "description": "Deus Ex Machina",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#000000",
