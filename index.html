@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/logo192.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="stylesheet" href="/src/style.css" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Phaser Platformer" />
+    <title>Phaser Platformer | remarkablegames</title>
+
+    <!--
+      GitHub Corners. See https://github.com/remarkablemark/github-corners
+    -->
+    <% if (process.env.BUNDLE !== 'true') { %>
+    <script
+      src="https://unpkg.com/github-corners/dist/embed.min.js"
+      data-href="https://github.com/remarkablegames/phaser-platformer"
+      data-target="_blank"
+      async
+      defer
+    ></script>
+    <% } %>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to play this game.</noscript>
+    <script type="module" src="/src/index.ts"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () {
+        dataLayer.push(arguments);
+      };
+      gtag('js', new Date());
+    </script>
+  </body>
+</html>
