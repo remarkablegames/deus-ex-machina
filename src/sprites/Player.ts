@@ -8,9 +8,14 @@ const ANIMATION = {
   RUN: 'RUN',
 };
 
+const PLAYER_GROUND_DRAG_X = 1000;
+const PLAYER_AIR_DRAG_X = 0;
+const PLAYER_DRAG_Y = 0;
+const PLAYER_MAX_VELOCITY_X = 300;
+const PLAYER_MAX_VELOCITY_Y = 600;
 const CONVEYOR_SPEED = 10;
-const CONVEYOR_UPWARD_LAUNCH_SPEED = 600;
-const CONVEYOR_JUMP_BOOST = 600;
+const CONVEYOR_UPWARD_LAUNCH_SPEED = 500;
+const CONVEYOR_JUMP_BOOST = 500;
 
 type Cursors = Record<
   'w' | 'a' | 's' | 'd' | 'up' | 'left' | 'down' | 'right',
@@ -49,8 +54,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.physics.world.enable(this);
 
     // Create the physics-based sprite that we will move around and animate
-    this.setDrag(1000, 0)
-      .setMaxVelocity(300, 400)
+    this.setDrag(PLAYER_GROUND_DRAG_X, PLAYER_DRAG_Y)
+      .setMaxVelocity(PLAYER_MAX_VELOCITY_X, PLAYER_MAX_VELOCITY_Y)
       .setSize(18, 24)
       .setOffset(7, 9);
 
@@ -99,6 +104,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   update({ conveyorVelocity }: PlayerEnvironment) {
     const acceleration = this.body.blocked.down ? 600 : 200;
+    const dragX = this.body.blocked.down
+      ? PLAYER_GROUND_DRAG_X
+      : PLAYER_AIR_DRAG_X;
+
+    this.setDrag(dragX, PLAYER_DRAG_Y);
 
     // Apply horizontal acceleration when left or right are applied
     switch (true) {
