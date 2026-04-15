@@ -9,7 +9,8 @@ const ANIMATION = {
 };
 
 const CONVEYOR_SPEED = 10;
-const CONVEYOR_JUMP_BOOST = 120;
+const CONVEYOR_UPWARD_LAUNCH_SPEED = 600;
+const CONVEYOR_JUMP_BOOST = 600;
 
 type Cursors = Record<
   'w' | 'a' | 's' | 'd' | 'up' | 'left' | 'down' | 'right',
@@ -120,6 +121,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     if (conveyorVelocity) {
+      const conveyorVelocityY =
+        conveyorVelocity.y < 0 && this.body.blocked.down
+          ? Math.min(
+              this.body.velocity.y,
+              conveyorVelocity.y * CONVEYOR_UPWARD_LAUNCH_SPEED,
+            )
+          : this.body.velocity.y + conveyorVelocity.y * CONVEYOR_SPEED;
+
       this.setVelocity(
         Phaser.Math.Clamp(
           this.body.velocity.x + conveyorVelocity.x * CONVEYOR_SPEED,
@@ -127,7 +136,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
           this.body.maxVelocity.x,
         ),
         Phaser.Math.Clamp(
-          this.body.velocity.y + conveyorVelocity.y * CONVEYOR_SPEED,
+          conveyorVelocityY,
           -this.body.maxVelocity.y,
           this.body.maxVelocity.y,
         ),
