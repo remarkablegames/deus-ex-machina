@@ -3,8 +3,11 @@ import Phaser from 'phaser';
 import { TILE } from '../constants';
 
 export class TileMarker extends Phaser.GameObjects.Graphics {
+  private static readonly ROTATION_STEP = Phaser.Math.DegToRad(90);
+
   private map!: Phaser.Tilemaps.Tilemap;
   private groundLayer!: Phaser.Tilemaps.TilemapLayer;
+  private wasLeftButtonDown = false;
 
   constructor(
     scene: Phaser.Scene,
@@ -44,15 +47,26 @@ export class TileMarker extends Phaser.GameObjects.Graphics {
     const { activePointer } = this.scene.input.manager;
     if (activePointer.leftButtonDown()) {
       try {
-        const tile = this.groundLayer
-          .putTileAtWorldXY(TILE.ARROW, worldPoint.x, worldPoint.y)
-          .setCollision(true);
-        tile.rotation = Phaser.Math.DegToRad(90);
+        const tile = this.groundLayer.getTileAtWorldXY(
+          worldPoint.x,
+          worldPoint.y,
+        ) as Phaser.Tilemaps.Tile | null;
+
+        if (!this.wasLeftButtonDown && tile?.index === TILE.ARROW) {
+          tile.rotation += TileMarker.ROTATION_STEP;
+        } else if (!tile) {
+          const newTile = this.groundLayer
+            .putTileAtWorldXY(TILE.ARROW, worldPoint.x, worldPoint.y)
+            .setCollision(true);
+          newTile.rotation = Phaser.Math.DegToRad(90);
+        }
       } catch {
         // don't draw tile if outside of game world
       }
     } else if (activePointer.rightButtonDown()) {
       this.groundLayer.removeTileAtWorldXY(worldPoint.x, worldPoint.y);
     }
+
+    this.wasLeftButtonDown = activePointer.leftButtonDown();
   }
 }
