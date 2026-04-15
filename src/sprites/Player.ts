@@ -9,6 +9,7 @@ const ANIMATION = {
 };
 
 const CONVEYOR_SPEED = 10;
+const CONVEYOR_JUMP_BOOST = 120;
 
 type Cursors = Record<
   'w' | 'a' | 's' | 'd' | 'up' | 'left' | 'down' | 'right',
@@ -138,7 +139,19 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.body.blocked.down &&
       (this.cursors.up.isDown || this.cursors.w.isDown)
     ) {
-      this.setVelocityY(-500);
+      this.setVelocity(
+        Phaser.Math.Clamp(
+          this.body.velocity.x +
+            (conveyorVelocity?.x ?? 0) * CONVEYOR_JUMP_BOOST,
+          -this.body.maxVelocity.x,
+          this.body.maxVelocity.x,
+        ),
+        Phaser.Math.Clamp(
+          -500 + (conveyorVelocity?.y ?? 0) * CONVEYOR_JUMP_BOOST,
+          -this.body.maxVelocity.y,
+          this.body.maxVelocity.y,
+        ),
+      );
     }
 
     // Update the animation/texture based on the state of the player
