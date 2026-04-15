@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import { KEY } from '../constants';
+import type { ConveyorVelocity } from '../utils';
 
 const ANIMATION = {
   IDLE: 'IDLE',
@@ -15,10 +16,7 @@ type Cursors = Record<
 >;
 
 export interface PlayerEnvironment {
-  conveyorVelocity: {
-    x: number;
-    y: number;
-  } | null;
+  conveyorVelocity: ConveyorVelocity | null;
 }
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
