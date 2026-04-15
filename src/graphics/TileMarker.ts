@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 
+import { TILE } from '../constants';
+
 export class TileMarker extends Phaser.GameObjects.Graphics {
   private map!: Phaser.Tilemaps.Tilemap;
   private groundLayer!: Phaser.Tilemaps.TilemapLayer;
@@ -42,11 +44,11 @@ export class TileMarker extends Phaser.GameObjects.Graphics {
     const { activePointer } = this.scene.input.manager;
     if (activePointer.leftButtonDown()) {
       try {
-        this.groundLayer
-          .putTileAtWorldXY(6, worldPoint.x, worldPoint.y)
+        const tile = this.groundLayer
+          .putTileAtWorldXY(TILE.ARROW, worldPoint.x, worldPoint.y)
           .setCollision(true);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      } catch (error) {
+        tile.rotation = Phaser.Math.DegToRad(90);
+      } catch {
         // don't draw tile if outside of game world
       }
     } else if (activePointer.rightButtonDown()) {
