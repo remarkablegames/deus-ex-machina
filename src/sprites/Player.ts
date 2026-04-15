@@ -7,10 +7,19 @@ const ANIMATION = {
   RUN: 'RUN',
 };
 
+const CONVEYOR_SPEED = 10;
+
 type Cursors = Record<
   'w' | 'a' | 's' | 'd' | 'up' | 'left' | 'down' | 'right',
   Phaser.Input.Keyboard.Key
 >;
+
+export interface PlayerEnvironment {
+  conveyorVelocity: {
+    x: number;
+    y: number;
+  } | null;
+}
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   declare body: Phaser.Physics.Arcade.Body;
@@ -88,7 +97,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.body.moves = false;
   }
 
-  update() {
+  update({ conveyorVelocity }: PlayerEnvironment) {
     const acceleration = this.body.blocked.down ? 600 : 200;
 
     // Apply horizontal acceleration when left or right are applied
@@ -109,6 +118,21 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
       default:
         this.setAccelerationX(0);
+    }
+
+    if (conveyorVelocity) {
+      this.setVelocity(
+        Phaser.Math.Clamp(
+          this.body.velocity.x + conveyorVelocity.x * CONVEYOR_SPEED,
+          -this.body.maxVelocity.x,
+          this.body.maxVelocity.x,
+        ),
+        Phaser.Math.Clamp(
+          this.body.velocity.y + conveyorVelocity.y * CONVEYOR_SPEED,
+          -this.body.maxVelocity.y,
+          this.body.maxVelocity.y,
+        ),
+      );
     }
 
     // Only allow the player to jump if they are on the ground
