@@ -111,8 +111,11 @@ export class Main extends Phaser.Scene {
       }
     });
 
-    this.cameras.main.startFollow(this.player);
-    this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+    const zoomX = this.cameras.main.width / map.widthInPixels;
+    const zoomY = this.cameras.main.height / map.heightInPixels;
+    const zoom = Math.min(zoomX, zoomY);
+    this.cameras.main.setZoom(zoom);
+    this.cameras.main.centerOn(map.widthInPixels / 2, map.heightInPixels / 2);
 
     this.tileMarker = new TileMarker(this, map, this.groundLayer);
 
