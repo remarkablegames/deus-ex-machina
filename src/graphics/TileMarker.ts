@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import { TILE } from '../constants';
+import { KEY, TILE } from '../constants';
 
 export class TileMarker extends Phaser.GameObjects.Graphics {
   private static readonly ROTATION_STEP = Phaser.Math.DegToRad(90);
@@ -54,11 +54,13 @@ export class TileMarker extends Phaser.GameObjects.Graphics {
 
         if (!this.wasLeftButtonDown && tile?.index === TILE.ARROW) {
           tile.rotation += TileMarker.ROTATION_STEP;
+          this.scene.sound.play(KEY.SOUND.DRAW);
         } else if (!tile) {
           const newTile = this.groundLayer
             .putTileAtWorldXY(TILE.ARROW, worldPoint.x, worldPoint.y)
             .setCollision(true);
           newTile.rotation = Phaser.Math.DegToRad(90);
+          this.scene.sound.play(KEY.SOUND.DRAW);
         }
       } catch {
         // don't draw tile if outside of game world

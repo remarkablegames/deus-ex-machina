@@ -17,5 +17,6 @@ export const MUSIC = {
 } as const;
 
 export const SOUND = {
+  DRAW: 'DRAW',
   JUMP: 'JUMP',
 } as const;
