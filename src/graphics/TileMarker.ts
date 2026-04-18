@@ -8,6 +8,7 @@ export class TileMarker extends Phaser.GameObjects.Graphics {
   private map!: Phaser.Tilemaps.Tilemap;
   private groundLayer!: Phaser.Tilemaps.TilemapLayer;
   private wasLeftButtonDown = false;
+  private wasRightButtonDown = false;
 
   constructor(
     scene: Phaser.Scene,
@@ -66,9 +67,20 @@ export class TileMarker extends Phaser.GameObjects.Graphics {
         // don't draw tile if outside of game world
       }
     } else if (activePointer.rightButtonDown()) {
-      this.groundLayer.removeTileAtWorldXY(worldPoint.x, worldPoint.y);
+      if (!this.wasRightButtonDown) {
+        const tile = this.groundLayer.getTileAtWorldXY(
+          worldPoint.x,
+          worldPoint.y,
+        ) as Phaser.Tilemaps.Tile | null;
+
+        if (tile) {
+          this.groundLayer.removeTileAtWorldXY(worldPoint.x, worldPoint.y);
+          this.scene.sound.play(KEY.SOUND.ERASE);
+        }
+      }
     }
 
     this.wasLeftButtonDown = activePointer.leftButtonDown();
+    this.wasRightButtonDown = activePointer.rightButtonDown();
   }
 }
