@@ -69,6 +69,7 @@ export class Main extends Phaser.Scene {
     // sprite is hovering over the spikes. We'll remove the spike tiles and turn them into sprites
     // so that we give them a more fitting hitbox
     this.spikeGroup = this.physics.add.staticGroup();
+
     this.groundLayer.forEachTile((tile) => {
       if (tile.index === TILE.SPIKE) {
         const spike = this.spikeGroup.create(
@@ -90,6 +91,21 @@ export class Main extends Phaser.Scene {
         }
 
         this.groundLayer.removeTileAt(tile.x, tile.y);
+      } else if (tile.index === TILE.ARROW) {
+        const currentTile = this.groundLayer.getTileAtWorldXY(
+          tile.getCenterX(),
+          tile.getCenterY(),
+        ) as Phaser.Tilemaps.Tile | null;
+
+        this.groundLayer
+          .putTileAtWorldXY(
+            TILE.ARROW,
+            currentTile!.getCenterX(),
+            currentTile!.getCenterY(),
+          )
+          .setCollision(true);
+
+        currentTile!.rotation = tile.rotation;
       }
     });
 
