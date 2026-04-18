@@ -26,8 +26,8 @@ export class Main extends Phaser.Scene {
     super(KEY.SCENE.MAIN);
   }
 
-  init(data: { levelKey?: string }) {
-    this.levelKey = data.levelKey ?? LEVELS[0].KEY;
+  init(data: { levelKey: string }) {
+    this.levelKey = data.levelKey;
   }
 
   create() {

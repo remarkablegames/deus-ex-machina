@@ -32,6 +32,6 @@ export class Boot extends Scene {
   }
 
   create() {
-    this.scene.start(KEY.SCENE.MAIN);
+    this.scene.start(KEY.SCENE.MAIN, { levelKey: LEVELS[0].KEY });
   }
 }
