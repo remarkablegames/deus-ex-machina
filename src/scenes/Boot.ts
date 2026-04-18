@@ -26,10 +26,7 @@ export class Boot extends Scene {
       'tilemaps/0x72-industrial-tileset-32px-extruded.png',
     );
 
-    this.load.tilemapTiledJSON(
-      KEY.TILEMAP.PLATFORMER,
-      'tilemaps/platformer.json',
-    );
+    this.load.tilemapTiledJSON(KEY.TILEMAP.LEVEL1, 'tilemaps/level1.json');
   }
 
   create() {

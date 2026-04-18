@@ -27,7 +27,7 @@ export class Main extends Phaser.Scene {
   create() {
     this.isPlayerDead = false;
 
-    const map = this.make.tilemap({ key: KEY.TILEMAP.PLATFORMER });
+    const map = this.make.tilemap({ key: KEY.TILEMAP.LEVEL1 });
     const tileset = map.addTilesetImage(TILESET_NAME, KEY.IMAGE.TILES)!;
 
     map.createLayer(TILEMAP_LAYER.BACKGROUND, tileset);

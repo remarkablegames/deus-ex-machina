@@ -13,5 +13,5 @@ export const SPRITESHEET = {
 } as const;
 
 export const TILEMAP = {
-  PLATFORMER: 'PLATFORMER',
+  LEVEL1: 'LEVEL1',
 } as const;
