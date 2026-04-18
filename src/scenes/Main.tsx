@@ -116,7 +116,7 @@ export class Main extends Phaser.Scene {
     this.tileMarker = new TileMarker(this, map, this.groundLayer);
 
     const levelIndex = LEVELS.findIndex(({ KEY }) => KEY === this.levelKey);
-    render(<HelpText level={levelIndex + 1} />, this);
+    render(<HelpText level={levelIndex} />, this);
   }
 
   update() {

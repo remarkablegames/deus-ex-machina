@@ -6,7 +6,7 @@ import { LEVELS } from '../constants';
  * Help text that has a "fixed" position on the screen.
  */
 export function HelpText({ level }: { level: number }) {
-  const text = LEVELS[level - 1]?.TEXT;
+  const text = LEVELS[level]?.TEXT;
 
   if (!text) {
     return null;
