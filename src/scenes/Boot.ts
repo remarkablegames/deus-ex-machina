@@ -32,6 +32,12 @@ export class Boot extends Scene {
   }
 
   create() {
-    this.scene.start(KEY.SCENE.MAIN, { levelKey: LEVELS[0].KEY });
+    this.scene.start(KEY.SCENE.MAIN, { levelKey: this.getLevelKey() });
+  }
+
+  private getLevelKey() {
+    const params = new URLSearchParams(window.location.search);
+    const levelIndex = Number(params.get('level') ?? 0);
+    return (LEVELS[levelIndex] ?? LEVELS[0]).KEY;
   }
 }

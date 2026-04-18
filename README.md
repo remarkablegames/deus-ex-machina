@@ -78,3 +78,15 @@ Your game is ready to be deployed!
 Builds the game and compresses the contents into a ZIP archive in the `dist` folder.
 
 Your game can be uploaded to your server, [itch.io](https://itch.io/), [newgrounds](https://www.newgrounds.com/), etc.
+
+## Testing
+
+### Level
+
+To start the game at a specific level, append the `?level=` querystring parameter to the URL with a zero-based index:
+
+```
+http://localhost:5173/?level=0
+```
+
+If the index is out of range or omitted, the game defaults to level `0`.
