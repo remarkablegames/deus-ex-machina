@@ -15,4 +15,9 @@ export const LEVELS: LevelConfig[] = [
     TILEMAP: 'tilemaps/level1.json',
     TEXT: 'Left-click to draw tiles',
   },
+  {
+    KEY: 'level2',
+    TILEMAP: 'tilemaps/level2.json',
+    TEXT: '',
+  },
 ];

@@ -52,6 +52,7 @@ export class Main extends Phaser.Scene {
       TILEMAP_LAYER.OBJECTS,
       ({ name }) => name === TILEMAP_OBJECT.WIN,
     );
+
     if (winPoint) {
       const winZone = this.add.zone(winPoint.x!, winPoint.y!, 32, 32);
       this.physics.world.enable(winZone, Phaser.Physics.Arcade.STATIC_BODY);
