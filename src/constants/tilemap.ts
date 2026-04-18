@@ -8,7 +8,8 @@ export const TILEMAP_LAYER = {
 } as const;
 
 export const TILEMAP_OBJECT = {
-  SPAWN_POINT: 'Spawn Point',
+  SPAWN: 'Spawn',
+  WIN: 'Win',
 } as const;
 
 export const TILE = {

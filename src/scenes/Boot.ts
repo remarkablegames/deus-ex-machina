@@ -27,6 +27,7 @@ export class Boot extends Scene {
     );
 
     this.load.tilemapTiledJSON(KEY.TILEMAP.LEVEL1, 'tilemaps/level1.json');
+    this.load.tilemapTiledJSON(KEY.TILEMAP.LEVEL2, 'tilemaps/level2.json');
   }
 
   create() {

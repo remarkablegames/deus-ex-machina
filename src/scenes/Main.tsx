@@ -19,27 +19,46 @@ export class Main extends Phaser.Scene {
   private spikeGroup!: Phaser.Physics.Arcade.StaticGroup;
   private tileMarker!: Phaser.GameObjects.Graphics;
   private isPlayerDead = false;
+  private levelKey: string = KEY.TILEMAP.LEVEL1;
 
   constructor() {
     super(KEY.SCENE.MAIN);
   }
 
+  init(data: { levelKey?: string }) {
+    this.levelKey = data.levelKey ?? KEY.TILEMAP.LEVEL1;
+  }
+
   create() {
     this.isPlayerDead = false;
 
-    const map = this.make.tilemap({ key: KEY.TILEMAP.LEVEL1 });
+    const map = this.make.tilemap({ key: this.levelKey });
     const tileset = map.addTilesetImage(TILESET_NAME, KEY.IMAGE.TILES)!;
 
     map.createLayer(TILEMAP_LAYER.BACKGROUND, tileset);
     this.groundLayer = map.createLayer(TILEMAP_LAYER.GROUND, tileset)!;
     map.createLayer(TILEMAP_LAYER.FOREGROUND, tileset);
 
-    // Instantiate a player instance at the location of the "Spawn Point" object in the Tiled map
+    // Instantiate a player instance at the location of the "Spawn" object in the Tiled map
     const spawnPoint = map.findObject(
       TILEMAP_LAYER.OBJECTS,
-      ({ name }) => name === TILEMAP_OBJECT.SPAWN_POINT,
+      ({ name }) => name === TILEMAP_OBJECT.SPAWN,
     )!;
     this.player = new Player(this, spawnPoint.x!, spawnPoint.y!);
+
+    // Find the Win object and create an invisible zone for collision
+    const winPoint = map.findObject(
+      TILEMAP_LAYER.OBJECTS,
+      ({ name }) => name === TILEMAP_OBJECT.WIN,
+    );
+    if (winPoint) {
+      const winZone = this.add.zone(winPoint.x!, winPoint.y!, 32, 32);
+      this.physics.world.enable(winZone, Phaser.Physics.Arcade.STATIC_BODY);
+
+      this.physics.add.overlap(this.player, winZone, () => {
+        this.handleWin();
+      });
+    }
 
     // Collide the player against the ground layer
     this.groundLayer.setCollisionByProperty({ collides: true });
@@ -113,5 +132,22 @@ export class Main extends Phaser.Scene {
         this.scene.restart();
       });
     }
+  }
+
+  private handleWin() {
+    const nextLevel = this.getNextLevel();
+    if (nextLevel) {
+      this.cameras.main.fade(250, 0, 0, 0);
+      this.cameras.main.once('camerafadeoutcomplete', () => {
+        this.scene.restart({ levelKey: nextLevel });
+      });
+    }
+  }
+
+  private getNextLevel(): string | null {
+    if (this.levelKey === KEY.TILEMAP.LEVEL1) {
+      return KEY.TILEMAP.LEVEL2;
+    }
+    return null;
   }
 }

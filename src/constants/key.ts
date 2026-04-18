@@ -14,4 +14,5 @@ export const SPRITESHEET = {
 
 export const TILEMAP = {
   LEVEL1: 'LEVEL1',
+  LEVEL2: 'LEVEL2',
 } as const;
