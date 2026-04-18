@@ -6,8 +6,8 @@ import * as scenes from './scenes';
  * https://rexrainbow.github.io/phaser3-rex-notes/docs/site/game/
  */
 new Game({
-  width: 1200, // 1024
-  height: 600, // 768
+  width: 1280,
+  height: 720,
   title: 'Deus Ex Machina',
   url: import.meta.env.VITE_APP_HOMEPAGE,
   version: import.meta.env.VITE_APP_VERSION,
