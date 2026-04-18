@@ -11,3 +11,7 @@ export const SCENE = {
 export const SPRITESHEET = {
   PLAYER: 'PLAYER',
 } as const;
+
+export const AUDIO = {
+  BACKGROUND: 'BACKGROUND',
+} as const;
