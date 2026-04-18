@@ -8,11 +8,9 @@ export function HelpText() {
     <Text
       x={16}
       y={16}
-      text={[
-        'WASD or arrow keys to move & jump',
-        'Left-click to draw tiles',
-        'Right-click to erase tiles',
-      ].join('\n')}
+      text={['Left-click to draw tiles', 'Right-click to erase tiles'].join(
+        '\n',
+      )}
       style={{
         backgroundColor: '#fff',
         color: '#000',

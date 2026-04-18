@@ -8,19 +8,12 @@ const ANIMATION = {
   RUN: 'RUN',
 };
 
-const PLAYER_GROUND_DRAG_X = 1000;
-const PLAYER_AIR_DRAG_X = 0;
+const PLAYER_DRAG_X = 0;
 const PLAYER_DRAG_Y = 0;
 const PLAYER_MAX_VELOCITY_X = 300;
 const PLAYER_MAX_VELOCITY_Y = 600;
 const CONVEYOR_SPEED = 10;
 const CONVEYOR_UPWARD_LAUNCH_SPEED = 500;
-const CONVEYOR_JUMP_BOOST = 500;
-
-type Cursors = Record<
-  'w' | 'a' | 's' | 'd' | 'up' | 'left' | 'down' | 'right',
-  Phaser.Input.Keyboard.Key
->;
 
 export interface PlayerEnvironment {
   conveyorVelocity: ConveyorVelocity | null;
@@ -28,7 +21,8 @@ export interface PlayerEnvironment {
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   declare body: Phaser.Physics.Arcade.Body;
-  private cursors: Cursors;
+
+  private lastVelocityX = 0;
 
   constructor(
     scene: Phaser.Scene,
@@ -38,9 +32,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     frame = 0,
   ) {
     super(scene, x, y, texture, frame);
-
-    // Add cursor keys
-    this.cursors = this.createCursorKeys();
 
     // Create sprite animations
     this.createAnimations();
@@ -54,19 +45,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.physics.world.enable(this);
 
     // Create the physics-based sprite that we will move around and animate
-    this.setDrag(PLAYER_GROUND_DRAG_X, PLAYER_DRAG_Y)
+    this.setDrag(PLAYER_DRAG_X, PLAYER_DRAG_Y)
       .setMaxVelocity(PLAYER_MAX_VELOCITY_X, PLAYER_MAX_VELOCITY_Y)
       .setSize(18, 24)
       .setOffset(7, 9);
 
     // Add the sprite to the scene
     this.scene.add.existing(this);
-  }
-
-  private createCursorKeys() {
-    return this.scene.input.keyboard!.addKeys(
-      'w,a,s,d,up,left,down,right',
-    ) as Cursors;
   }
 
   private createAnimations() {
@@ -103,74 +88,36 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   update({ conveyorVelocity }: PlayerEnvironment) {
-    const acceleration = this.body.blocked.down ? 600 : 200;
-    const dragX = this.body.blocked.down
-      ? PLAYER_GROUND_DRAG_X
-      : PLAYER_AIR_DRAG_X;
+    if (this.body.velocity.x !== 0) {
+      this.lastVelocityX = this.body.velocity.x;
+    }
 
-    this.setDrag(dragX, PLAYER_DRAG_Y);
-
-    // Apply horizontal acceleration when left or right are applied
-    switch (true) {
-      case this.cursors.left.isDown:
-      case this.cursors.a.isDown:
-        // No need to have a separate set of graphics for running to the left & to the right
-        // Instead we can just mirror the sprite
-        this.setFlipX(true);
-        this.setAccelerationX(-acceleration);
-        break;
-
-      case this.cursors.right.isDown:
-      case this.cursors.d.isDown:
-        this.setFlipX(false);
-        this.setAccelerationX(acceleration);
-        break;
-
-      default:
-        this.setAccelerationX(0);
+    if (this.body.blocked.left || this.body.blocked.right) {
+      this.setVelocityX(-this.lastVelocityX);
     }
 
     if (conveyorVelocity) {
-      const conveyorVelocityY =
-        conveyorVelocity.y < 0 && this.body.blocked.down
-          ? Math.min(
-              this.body.velocity.y,
-              conveyorVelocity.y * CONVEYOR_UPWARD_LAUNCH_SPEED,
-            )
-          : this.body.velocity.y + conveyorVelocity.y * CONVEYOR_SPEED;
+      if (conveyorVelocity.x !== 0) {
+        this.setVelocityX(conveyorVelocity.x * this.body.maxVelocity.x);
+      }
 
-      this.setVelocity(
-        Phaser.Math.Clamp(
-          this.body.velocity.x + conveyorVelocity.x * CONVEYOR_SPEED,
-          -this.body.maxVelocity.x,
-          this.body.maxVelocity.x,
-        ),
-        Phaser.Math.Clamp(
-          conveyorVelocityY,
-          -this.body.maxVelocity.y,
-          this.body.maxVelocity.y,
-        ),
-      );
-    }
+      if (conveyorVelocity.y !== 0) {
+        const conveyorVelocityY =
+          conveyorVelocity.y < 0 && this.body.blocked.down
+            ? Math.min(
+                this.body.velocity.y,
+                conveyorVelocity.y * CONVEYOR_UPWARD_LAUNCH_SPEED,
+              )
+            : this.body.velocity.y + conveyorVelocity.y * CONVEYOR_SPEED;
 
-    // Only allow the player to jump if they are on the ground
-    if (
-      this.body.blocked.down &&
-      (this.cursors.up.isDown || this.cursors.w.isDown)
-    ) {
-      this.setVelocity(
-        Phaser.Math.Clamp(
-          this.body.velocity.x +
-            (conveyorVelocity?.x ?? 0) * CONVEYOR_JUMP_BOOST,
-          -this.body.maxVelocity.x,
-          this.body.maxVelocity.x,
-        ),
-        Phaser.Math.Clamp(
-          -500 + (conveyorVelocity?.y ?? 0) * CONVEYOR_JUMP_BOOST,
-          -this.body.maxVelocity.y,
-          this.body.maxVelocity.y,
-        ),
-      );
+        this.setVelocityY(
+          Phaser.Math.Clamp(
+            conveyorVelocityY,
+            -this.body.maxVelocity.y,
+            this.body.maxVelocity.y,
+          ),
+        );
+      }
     }
 
     // Update the animation/texture based on the state of the player
