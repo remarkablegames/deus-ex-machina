@@ -18,7 +18,7 @@ export class Main extends Phaser.Scene {
   private groundLayer!: Phaser.Tilemaps.TilemapLayer;
   private player!: Player;
   private spikeGroup!: Phaser.Physics.Arcade.StaticGroup;
-  private tileMarker!: Phaser.GameObjects.Graphics;
+  private tileMarker!: TileMarker;
   private isPlayerDead = false;
   private levelKey: string = LEVELS[0].KEY;
 
@@ -133,6 +133,7 @@ export class Main extends Phaser.Scene {
     });
     this.tileMarker.update();
 
+    // Kill the player if they fall off the map or touch a spike
     if (
       this.player.y > this.groundLayer.height ||
       this.physics.world.overlap(this.player, this.spikeGroup)
