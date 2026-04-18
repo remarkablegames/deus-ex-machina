@@ -31,6 +31,7 @@ export class Boot extends Scene {
     }
 
     this.load.audio(KEY.MUSIC.BACKGROUND, 'music/background.mp3');
+    this.load.audio(KEY.SOUND.JUMP, 'sounds/jump.mp3');
   }
 
   create() {

@@ -23,6 +23,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   declare body: Phaser.Physics.Arcade.Body;
 
   private lastVelocityX = 0;
+  private wasBlockedDown = false;
 
   constructor(
     scene: Phaser.Scene,
@@ -102,13 +103,18 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       }
 
       if (conveyorVelocity.y !== 0) {
-        const conveyorVelocityY =
-          conveyorVelocity.y < 0 && this.body.blocked.down
-            ? Math.min(
-                this.body.velocity.y,
-                conveyorVelocity.y * CONVEYOR_UPWARD_LAUNCH_SPEED,
-              )
-            : this.body.velocity.y + conveyorVelocity.y * CONVEYOR_SPEED;
+        const isUpwardLaunch = conveyorVelocity.y < 0 && this.body.blocked.down;
+
+        if (isUpwardLaunch && this.wasBlockedDown) {
+          this.scene.sound.play(KEY.SOUND.JUMP);
+        }
+
+        const conveyorVelocityY = isUpwardLaunch
+          ? Math.min(
+              this.body.velocity.y,
+              conveyorVelocity.y * CONVEYOR_UPWARD_LAUNCH_SPEED,
+            )
+          : this.body.velocity.y + conveyorVelocity.y * CONVEYOR_SPEED;
 
         this.setVelocityY(
           Phaser.Math.Clamp(
@@ -119,6 +125,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         );
       }
     }
+
+    this.wasBlockedDown = this.body.blocked.down;
 
     // Update the animation/texture based on the state of the player
     if (this.body.blocked.down) {
