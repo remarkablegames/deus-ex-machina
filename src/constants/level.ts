@@ -8,19 +8,19 @@ export const LEVELS: LevelConfig[] = [
   {
     KEY: 'level0',
     TILEMAP: 'tilemaps/level0.json',
-    TEXT: 'Right-click to erase tiles',
+    TEXT: 'Right-click to erase tile',
   },
 
   {
     KEY: 'level1',
     TILEMAP: 'tilemaps/level1.json',
-    TEXT: 'Left-click to draw tiles',
+    TEXT: 'Left-click to draw tile',
   },
 
   {
     KEY: 'level2',
     TILEMAP: 'tilemaps/level2.json',
-    TEXT: 'Left-click the tile again to change direction',
+    TEXT: 'Left-click tile to rotate it',
   },
 
   {
