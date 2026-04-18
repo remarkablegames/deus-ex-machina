@@ -30,11 +30,11 @@ export class Boot extends Scene {
       this.load.tilemapTiledJSON(KEY, TILEMAP);
     }
 
-    this.load.audio(KEY.AUDIO.BACKGROUND, 'music/background.mp3');
+    this.load.audio(KEY.MUSIC.BACKGROUND, 'music/background.mp3');
   }
 
   create() {
-    this.sound.play(KEY.AUDIO.BACKGROUND, { loop: true });
+    this.sound.play(KEY.MUSIC.BACKGROUND, { loop: true });
     this.scene.start(KEY.SCENE.MAIN, { levelKey: this.getLevelKey() });
   }
 

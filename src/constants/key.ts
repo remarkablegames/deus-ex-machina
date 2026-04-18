@@ -12,6 +12,6 @@ export const SPRITESHEET = {
   PLAYER: 'PLAYER',
 } as const;
 
-export const AUDIO = {
+export const MUSIC = {
   BACKGROUND: 'BACKGROUND',
 } as const;
