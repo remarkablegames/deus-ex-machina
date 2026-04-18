@@ -140,7 +140,7 @@ export class Main extends Phaser.Scene {
       // Flag that the player is dead so that we can stop update from running in the future
       this.isPlayerDead = true;
 
-      this.cameras.main.shake(100, 0.05);
+      this.cameras.main.shake(100, 0.01);
       this.cameras.main.fade(250, 0, 0, 0);
 
       // Freeze the player to leave them on screen while fading but remove the marker immediately
