@@ -1,16 +1,22 @@
 import { Text } from 'phaser-jsx';
 
+import { LEVELS } from '../constants';
+
 /**
  * Help text that has a "fixed" position on the screen.
  */
-export function HelpText() {
+export function HelpText({ level }: { level: number }) {
+  const text = LEVELS[level - 1]?.TEXT;
+
+  if (!text) {
+    return null;
+  }
+
   return (
     <Text
       x={16}
       y={16}
-      text={['Left-click to draw tiles', 'Right-click to erase tiles'].join(
-        '\n',
-      )}
+      text={text}
       style={{
         backgroundColor: '#fff',
         color: '#000',

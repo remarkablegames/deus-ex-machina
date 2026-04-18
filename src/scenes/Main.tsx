@@ -4,6 +4,7 @@ import { render } from 'phaser-jsx';
 import { HelpText } from '../components';
 import {
   KEY,
+  LEVELS,
   TILE,
   TILEMAP_LAYER,
   TILEMAP_OBJECT,
@@ -19,14 +20,14 @@ export class Main extends Phaser.Scene {
   private spikeGroup!: Phaser.Physics.Arcade.StaticGroup;
   private tileMarker!: Phaser.GameObjects.Graphics;
   private isPlayerDead = false;
-  private levelKey: string = KEY.TILEMAP.LEVEL1;
+  private levelKey: string = LEVELS[0].KEY;
 
   constructor() {
     super(KEY.SCENE.MAIN);
   }
 
   init(data: { levelKey?: string }) {
-    this.levelKey = data.levelKey ?? KEY.TILEMAP.LEVEL1;
+    this.levelKey = data.levelKey ?? LEVELS[0].KEY;
   }
 
   create() {
@@ -114,7 +115,8 @@ export class Main extends Phaser.Scene {
 
     this.tileMarker = new TileMarker(this, map, this.groundLayer);
 
-    render(<HelpText />, this);
+    const levelIndex = LEVELS.findIndex(({ KEY }) => KEY === this.levelKey);
+    render(<HelpText level={levelIndex + 1} />, this);
   }
 
   update() {
@@ -161,9 +163,7 @@ export class Main extends Phaser.Scene {
   }
 
   private getNextLevel(): string | null {
-    if (this.levelKey === KEY.TILEMAP.LEVEL1) {
-      return KEY.TILEMAP.LEVEL2;
-    }
-    return null;
+    const index = LEVELS.findIndex(({ KEY }) => KEY === this.levelKey);
+    return LEVELS[index + 1]?.KEY ?? null;
   }
 }

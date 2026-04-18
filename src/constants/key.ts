@@ -11,8 +11,3 @@ export const SCENE = {
 export const SPRITESHEET = {
   PLAYER: 'PLAYER',
 } as const;
-
-export const TILEMAP = {
-  LEVEL1: 'LEVEL1',
-  LEVEL2: 'LEVEL2',
-} as const;
