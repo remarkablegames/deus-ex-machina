@@ -2,8 +2,9 @@ import { Text, useScene } from 'phaser-jsx';
 
 import { KEY } from '../constants';
 
-const BG_COLOR = '#2d3142';
-const BG_COLOR_HOVER = '#4a4e69';
+const BACKGROUND_COLOR = '#2d3142';
+const BACKGROUND_COLOR_HOVER = '#4a4e69';
+const TEXT_COLOR = '#fff';
 
 export function Button({
   x,
@@ -26,8 +27,8 @@ export function Button({
       style={{
         fontSize: 24,
         fontFamily: 'monospace',
-        color: '#ffffff',
-        backgroundColor: BG_COLOR,
+        color: TEXT_COLOR,
+        backgroundColor: BACKGROUND_COLOR,
         padding: { x: 24, y: 16 },
       }}
       originX={0.5}
@@ -35,12 +36,14 @@ export function Button({
       input={{ cursor: 'pointer' }}
       onPointerOver={(_pointer, gameObject) => {
         (gameObject as Phaser.GameObjects.Text).setBackgroundColor(
-          BG_COLOR_HOVER,
+          BACKGROUND_COLOR_HOVER,
         );
         scene.sound.play(KEY.SOUND.HOVER);
       }}
       onPointerOut={(_pointer, gameObject) => {
-        (gameObject as Phaser.GameObjects.Text).setBackgroundColor(BG_COLOR);
+        (gameObject as Phaser.GameObjects.Text).setBackgroundColor(
+          BACKGROUND_COLOR,
+        );
       }}
       onPointerDown={() => {
         scene.sound.play(KEY.SOUND.CLICK);
