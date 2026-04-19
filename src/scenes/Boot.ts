@@ -40,6 +40,13 @@ export class Boot extends Scene {
   }
 
   create() {
-    this.scene.start(KEY.SCENE.MENU);
+    const params = new URLSearchParams(window.location.search);
+    const level = parseInt(params.get('level')!, 10);
+
+    if (level >= 0) {
+      this.scene.start(KEY.SCENE.MAIN, { level });
+    } else {
+      this.scene.start(KEY.SCENE.MENU);
+    }
   }
 }

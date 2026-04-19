@@ -27,8 +27,8 @@ export class Main extends Phaser.Scene {
     super(KEY.SCENE.MAIN);
   }
 
-  init(data: { levelIndex: number }) {
-    this.level = LEVELS[data.levelIndex] ?? LEVELS[0];
+  init(data: { level: number }) {
+    this.level = LEVELS[data.level] ?? LEVELS[0];
   }
 
   create() {
@@ -174,7 +174,7 @@ export class Main extends Phaser.Scene {
       this.sound.play(KEY.SOUND.WIN);
       this.cameras.main.fade(250, 0, 0, 0);
       this.cameras.main.once('camerafadeoutcomplete', () => {
-        this.scene.start(KEY.SCENE.MAIN, { levelIndex: this.level.INDEX + 1 });
+        this.scene.start(KEY.SCENE.MAIN, { level: this.level.INDEX + 1 });
       });
     }
   }

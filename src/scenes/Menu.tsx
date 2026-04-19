@@ -44,8 +44,6 @@ export class Menu extends Scene {
   }
 
   private handleStart() {
-    const params = new URLSearchParams(window.location.search);
-    const levelIndex = Number(params.get('level') ?? 0);
-    this.scene.start(KEY.SCENE.MAIN, { levelIndex });
+    this.scene.start(KEY.SCENE.MAIN, { level: 0 });
   }
 }
