@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { Container, render, Text } from 'phaser-jsx';
+import { Fragment, render, Text } from 'phaser-jsx';
 
 import { Button } from '../components';
 import { KEY } from '../constants';
@@ -16,7 +16,7 @@ export class Menu extends Scene {
     const { centerX, centerY, height } = this.cameras.main;
 
     render(
-      <Container>
+      <Fragment>
         <Text
           x={centerX}
           y={height / 3}
@@ -38,7 +38,7 @@ export class Menu extends Scene {
             this.handleStart();
           }}
         />
-      </Container>,
+      </Fragment>,
       this,
     );
   }
