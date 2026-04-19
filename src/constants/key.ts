@@ -20,5 +20,7 @@ export const SOUND = {
   DRAW: 'DRAW',
   ERASE: 'ERASE',
   JUMP: 'JUMP',
+  LOSE: 'LOSE',
   RUN: 'RUN',
+  WIN: 'WIN',
 } as const;

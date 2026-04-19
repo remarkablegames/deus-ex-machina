@@ -20,6 +20,7 @@ export class Main extends Phaser.Scene {
   private spikeGroup!: Phaser.Physics.Arcade.StaticGroup;
   private tileMarker!: TileMarker;
   private isPlayerDead = false;
+  private isPlayerWin = false;
   private levelKey: string = LEVELS[0].KEY;
 
   constructor() {
@@ -32,6 +33,7 @@ export class Main extends Phaser.Scene {
 
   create() {
     this.isPlayerDead = false;
+    this.isPlayerWin = false;
 
     const map = this.make.tilemap({ key: this.levelKey });
     const tileset = map.addTilesetImage(TILESET_NAME, KEY.IMAGE.TILES)!;
@@ -58,7 +60,10 @@ export class Main extends Phaser.Scene {
       this.physics.world.enable(winZone, Phaser.Physics.Arcade.STATIC_BODY);
 
       this.physics.add.overlap(this.player, winZone, () => {
-        this.handleWin();
+        if (!this.isPlayerWin) {
+          this.isPlayerWin = true;
+          this.handleWin();
+        }
       });
     }
 
@@ -144,6 +149,7 @@ export class Main extends Phaser.Scene {
       // Flag that the player is dead so that we can stop update from running in the future
       this.isPlayerDead = true;
 
+      this.sound.play(KEY.SOUND.LOSE);
       this.cameras.main.shake(100, 0.01);
       this.cameras.main.fade(250, 0, 0, 0);
 
@@ -160,6 +166,7 @@ export class Main extends Phaser.Scene {
   private handleWin() {
     const nextLevel = this.getNextLevel();
     if (nextLevel) {
+      this.sound.play(KEY.SOUND.WIN);
       this.cameras.main.fade(250, 0, 0, 0);
       this.cameras.main.once('camerafadeoutcomplete', () => {
         this.scene.restart({ levelKey: nextLevel });
