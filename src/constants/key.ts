@@ -20,8 +20,10 @@ export const MUSIC = {
 } as const;
 
 export const SOUND = {
+  CLICK: 'CLICK',
   DRAW: 'DRAW',
   ERASE: 'ERASE',
+  HOVER: 'HOVER',
   JUMP: 'JUMP',
   LOSE: 'LOSE',
   RUN: 'RUN',

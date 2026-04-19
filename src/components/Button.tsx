@@ -1,4 +1,6 @@
-import { Text } from 'phaser-jsx';
+import { Text, useScene } from 'phaser-jsx';
+
+import { KEY } from '../constants';
 
 const BG_COLOR = '#2d3142';
 const BG_COLOR_HOVER = '#4a4e69';
@@ -14,6 +16,8 @@ export function Button({
   text: string;
   onClick: () => void;
 }) {
+  const scene = useScene();
+
   return (
     <Text
       x={x}
@@ -33,11 +37,15 @@ export function Button({
         (gameObject as Phaser.GameObjects.Text).setBackgroundColor(
           BG_COLOR_HOVER,
         );
+        scene.sound.play(KEY.SOUND.HOVER);
       }}
       onPointerOut={(_pointer, gameObject) => {
         (gameObject as Phaser.GameObjects.Text).setBackgroundColor(BG_COLOR);
       }}
-      onPointerDown={onClick}
+      onPointerDown={() => {
+        scene.sound.play(KEY.SOUND.CLICK);
+        onClick();
+      }}
     />
   );
 }
