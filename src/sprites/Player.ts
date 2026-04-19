@@ -24,6 +24,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   private lastVelocityX = 0;
   private wasBlockedDown = false;
+  private wasRunning = false;
+  private runSound: Phaser.Sound.BaseSound;
 
   constructor(
     scene: Phaser.Scene,
@@ -39,6 +41,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     // Enable sprite physics
     this.enablePhysics();
+
+    // Create run sound
+    this.runSound = this.scene.sound.add(KEY.SOUND.RUN, { loop: true });
   }
 
   private enablePhysics() {
@@ -130,11 +135,19 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     // Update the animation/texture based on the state of the player
     if (this.body.blocked.down) {
-      this.anims.play(
-        this.body.velocity.x ? ANIMATION.RUN : ANIMATION.IDLE,
-        true,
-      );
+      const isRunning = this.body.velocity.x !== 0;
+
+      if (isRunning && !this.wasRunning) {
+        this.runSound.play();
+      } else if (!isRunning && this.wasRunning) {
+        this.runSound.stop();
+      }
+
+      this.anims.play(isRunning ? ANIMATION.RUN : ANIMATION.IDLE, true);
+      this.wasRunning = isRunning;
     } else {
+      this.wasRunning = false;
+      this.runSound.stop();
       this.anims.stop();
       this.setTexture(KEY.SPRITESHEET.PLAYER, 10);
     }

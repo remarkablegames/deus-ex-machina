@@ -20,4 +20,5 @@ export const SOUND = {
   DRAW: 'DRAW',
   ERASE: 'ERASE',
   JUMP: 'JUMP',
+  RUN: 'RUN',
 } as const;

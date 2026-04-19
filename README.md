@@ -11,6 +11,11 @@ Play the game on:
 
 - [remarkablegames](https://remarkablegames.org/deus-ex-machina/)
 
+## Credits
+
+- [Kenney Interface Sounds](https://kenney.nl/assets/interface-sounds)
+- [Person Running - LOOP](https://pixabay.com/sound-effects/film-special-effects-person-running-loop-245173/)
+
 ## Prerequisites
 
 [nvm](https://github.com/nvm-sh/nvm#installing-and-updating):
