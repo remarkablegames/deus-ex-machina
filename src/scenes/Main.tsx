@@ -20,7 +20,6 @@ export class Main extends Phaser.Scene {
   private spikeGroup!: Phaser.Physics.Arcade.StaticGroup;
   private tileMarker!: TileMarker;
   private isPlayerDead = false;
-  private isPlayerWin = false;
   private levelKey: string = LEVELS[0].KEY;
 
   constructor() {
@@ -33,7 +32,6 @@ export class Main extends Phaser.Scene {
 
   create() {
     this.isPlayerDead = false;
-    this.isPlayerWin = false;
 
     const map = this.make.tilemap({ key: this.levelKey });
     const tileset = map.addTilesetImage(TILESET_NAME, KEY.IMAGE.TILES)!;
@@ -59,11 +57,9 @@ export class Main extends Phaser.Scene {
       const winZone = this.add.zone(winPoint.x!, winPoint.y!, 32, 32);
       this.physics.world.enable(winZone, Phaser.Physics.Arcade.STATIC_BODY);
 
-      this.physics.add.overlap(this.player, winZone, () => {
-        if (!this.isPlayerWin) {
-          this.isPlayerWin = true;
-          this.handleWin();
-        }
+      const winOverlap = this.physics.add.overlap(this.player, winZone, () => {
+        this.physics.world.removeCollider(winOverlap);
+        this.handleWin();
       });
     }
 
