@@ -1,6 +1,7 @@
 import { Scene } from 'phaser';
 import { Container, render, Text } from 'phaser-jsx';
 
+import { Button } from '../components';
 import { KEY } from '../constants';
 
 export class Menu extends Scene {
@@ -29,31 +30,11 @@ export class Menu extends Scene {
           originY={0.5}
         />
 
-        <Text
+        <Button
           x={centerX}
           y={centerY}
           text="Start Game"
-          style={{
-            fontSize: 24,
-            fontFamily: 'monospace',
-            color: '#ffffff',
-            backgroundColor: '#2d3142',
-            padding: { x: 24, y: 16 },
-          }}
-          originX={0.5}
-          originY={0.5}
-          input={{ cursor: 'pointer' }}
-          onPointerOver={(_pointer, gameObject) => {
-            (gameObject as Phaser.GameObjects.Text).setBackgroundColor(
-              '#4a4e69',
-            );
-          }}
-          onPointerOut={(_pointer, gameObject) => {
-            (gameObject as Phaser.GameObjects.Text).setBackgroundColor(
-              '#2d3142',
-            );
-          }}
-          onPointerDown={() => {
+          onClick={() => {
             this.handleStart();
           }}
         />
