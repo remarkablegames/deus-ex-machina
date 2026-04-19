@@ -9,6 +9,9 @@ export class Menu extends Scene {
   }
 
   create() {
+    this.sound.stopAll();
+    this.sound.play(KEY.MUSIC.MENU, { loop: true });
+
     const { centerX, centerY, height } = this.cameras.main;
 
     render(
