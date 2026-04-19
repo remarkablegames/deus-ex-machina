@@ -89,6 +89,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
+  destroy(fromScene?: boolean) {
+    this.runSound.stop();
+    super.destroy(fromScene);
+  }
+
   freeze() {
     this.body.moves = false;
   }
