@@ -1,4 +1,5 @@
 import { Scene } from 'phaser';
+import { Container, render, Text } from 'phaser-jsx';
 
 import { KEY } from '../constants';
 
@@ -8,39 +9,54 @@ export class Menu extends Scene {
   }
 
   create() {
-    const width = this.cameras.main.width;
-    const height = this.cameras.main.height;
+    const { centerX, centerY, height } = this.cameras.main;
 
-    this.add
-      .text(width / 2, height / 3, 'Deus Ex Machina', {
-        fontSize: '48px',
-        fontFamily: 'monospace',
-        color: '#ffffff',
-      })
-      .setOrigin(0.5);
+    render(
+      <Container>
+        <Text
+          x={centerX}
+          y={height / 3}
+          text="Deus Ex Machina"
+          style={{
+            fontSize: 48,
+            fontFamily: 'monospace',
+            color: '#ffffff',
+          }}
+          originX={0.5}
+          originY={0.5}
+        />
 
-    const startButton = this.add
-      .text(width / 2, height / 2, 'Start Game', {
-        fontSize: '24px',
-        fontFamily: 'monospace',
-        color: '#ffffff',
-        backgroundColor: '#2d3142',
-        padding: { x: 24, y: 16 },
-      })
-      .setOrigin(0.5)
-      .setInteractive({ useHandCursor: true });
-
-    startButton.on('pointerover', () => {
-      startButton.setBackgroundColor('#4a4e69');
-    });
-
-    startButton.on('pointerout', () => {
-      startButton.setBackgroundColor('#2d3142');
-    });
-
-    startButton.on('pointerdown', () => {
-      this.handleStart();
-    });
+        <Text
+          x={centerX}
+          y={centerY}
+          text="Start Game"
+          style={{
+            fontSize: 24,
+            fontFamily: 'monospace',
+            color: '#ffffff',
+            backgroundColor: '#2d3142',
+            padding: { x: 24, y: 16 },
+          }}
+          originX={0.5}
+          originY={0.5}
+          input={{ cursor: 'pointer' }}
+          onPointerOver={(_pointer, gameObject) => {
+            (gameObject as Phaser.GameObjects.Text).setBackgroundColor(
+              '#4a4e69',
+            );
+          }}
+          onPointerOut={(_pointer, gameObject) => {
+            (gameObject as Phaser.GameObjects.Text).setBackgroundColor(
+              '#2d3142',
+            );
+          }}
+          onPointerDown={() => {
+            this.handleStart();
+          }}
+        />
+      </Container>,
+      this,
+    );
   }
 
   private handleStart() {
