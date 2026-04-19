@@ -5,6 +5,7 @@ export const IMAGE = {
 
 export const SCENE = {
   BOOT: 'BOOT',
+  MENU: 'MENU',
   MAIN: 'MAIN',
 } as const;
 

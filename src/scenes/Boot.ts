@@ -40,12 +40,6 @@ export class Boot extends Scene {
   }
 
   create() {
-    this.sound.play(KEY.MUSIC.BACKGROUND, { loop: true });
-    this.scene.start(KEY.SCENE.MAIN, { levelIndex: this.getLevelIndex() });
-  }
-
-  private getLevelIndex() {
-    const params = new URLSearchParams(window.location.search);
-    return Number(params.get('level') ?? 0);
+    this.scene.start(KEY.SCENE.MENU);
   }
 }
