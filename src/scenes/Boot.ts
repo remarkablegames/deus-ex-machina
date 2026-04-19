@@ -26,8 +26,8 @@ export class Boot extends Scene {
       'tilemaps/0x72-industrial-tileset-32px-extruded.png',
     );
 
-    for (const { KEY, TILEMAP } of LEVELS) {
-      this.load.tilemapTiledJSON(KEY, TILEMAP);
+    for (const { TILEMAP } of LEVELS) {
+      this.load.tilemapTiledJSON(TILEMAP, TILEMAP);
     }
 
     for (const key in KEY.MUSIC) {

@@ -43,7 +43,7 @@ export class Main extends Phaser.Scene {
       this.sound.play(this.level.MUSIC, { loop: true });
     }
 
-    const map = this.make.tilemap({ key: this.level.KEY });
+    const map = this.make.tilemap({ key: this.level.TILEMAP });
     const tileset = map.addTilesetImage(TILESET_NAME, KEY.IMAGE.TILES)!;
 
     map.createLayer(TILEMAP_LAYER.BACKGROUND, tileset);
