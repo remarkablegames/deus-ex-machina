@@ -30,7 +30,9 @@ export class Boot extends Scene {
       this.load.tilemapTiledJSON(KEY, TILEMAP);
     }
 
-    this.load.audio(KEY.MUSIC.BACKGROUND, 'music/background.mp3');
+    for (const key in KEY.MUSIC) {
+      this.load.audio(key, `music/${key.toLowerCase()}.mp3`);
+    }
 
     for (const key in KEY.SOUND) {
       this.load.audio(key, `sounds/${key.toLowerCase()}.mp3`);
@@ -39,12 +41,11 @@ export class Boot extends Scene {
 
   create() {
     this.sound.play(KEY.MUSIC.BACKGROUND, { loop: true });
-    this.scene.start(KEY.SCENE.MAIN, { levelKey: this.getLevelKey() });
+    this.scene.start(KEY.SCENE.MAIN, { levelIndex: this.getLevelIndex() });
   }
 
-  private getLevelKey() {
+  private getLevelIndex() {
     const params = new URLSearchParams(window.location.search);
-    const levelIndex = Number(params.get('level') ?? 0);
-    return (LEVELS[levelIndex] ?? LEVELS[0]).KEY;
+    return Number(params.get('level') ?? 0);
   }
 }

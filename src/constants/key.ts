@@ -14,6 +14,7 @@ export const SPRITESHEET = {
 
 export const MUSIC = {
   BACKGROUND: 'BACKGROUND',
+  INTRO: 'INTRO',
 } as const;
 
 export const SOUND = {

@@ -4,6 +4,7 @@ import { render } from 'phaser-jsx';
 import { HelpText } from '../components';
 import {
   KEY,
+  type Level,
   LEVELS,
   TILE,
   TILEMAP_LAYER,
@@ -20,20 +21,29 @@ export class Main extends Phaser.Scene {
   private spikeGroup!: Phaser.Physics.Arcade.StaticGroup;
   private tileMarker!: TileMarker;
   private isPlayerDead = false;
-  private levelKey: string = LEVELS[0].KEY;
+  private level!: Level;
 
   constructor() {
     super(KEY.SCENE.MAIN);
   }
 
-  init(data: { levelKey: string }) {
-    this.levelKey = data.levelKey;
+  init(data: { levelIndex: number }) {
+    this.level = LEVELS[data.levelIndex] ?? LEVELS[0];
   }
 
   create() {
     this.isPlayerDead = false;
 
-    const map = this.make.tilemap({ key: this.levelKey });
+    const musicKeys: string[] = Object.values(KEY.MUSIC);
+    const playingMusic = this.sound
+      .getAllPlaying()
+      .find((sound) => musicKeys.includes(sound.key));
+    if (playingMusic?.key !== this.level.MUSIC) {
+      playingMusic?.stop();
+      this.sound.play(this.level.MUSIC, { loop: true });
+    }
+
+    const map = this.make.tilemap({ key: this.level.KEY });
     const tileset = map.addTilesetImage(TILESET_NAME, KEY.IMAGE.TILES)!;
 
     map.createLayer(TILEMAP_LAYER.BACKGROUND, tileset);
@@ -120,8 +130,7 @@ export class Main extends Phaser.Scene {
 
     this.tileMarker = new TileMarker(this, map, this.groundLayer);
 
-    const levelIndex = LEVELS.findIndex(({ KEY }) => KEY === this.levelKey);
-    render(<HelpText level={levelIndex} />, this);
+    render(<HelpText level={this.level.INDEX} />, this);
   }
 
   update() {
@@ -165,13 +174,12 @@ export class Main extends Phaser.Scene {
       this.sound.play(KEY.SOUND.WIN);
       this.cameras.main.fade(250, 0, 0, 0);
       this.cameras.main.once('camerafadeoutcomplete', () => {
-        this.scene.restart({ levelKey: nextLevel });
+        this.scene.start(KEY.SCENE.MAIN, { levelIndex: this.level.INDEX + 1 });
       });
     }
   }
 
-  private getNextLevel(): string | null {
-    const index = LEVELS.findIndex(({ KEY }) => KEY === this.levelKey);
-    return LEVELS[index + 1]?.KEY ?? null;
+  private getNextLevel(): Level | null {
+    return LEVELS[this.level.INDEX + 1] ?? null;
   }
 }
