@@ -24,7 +24,7 @@ export const LEVELS: Level[] = [
 
   {
     INDEX: 2,
-    MUSIC: KEY.MUSIC.INTRO,
+    MUSIC: KEY.MUSIC.CONTINUATION,
     TILEMAP: 'tilemaps/level2.json',
     TEXT: 'Left-click tile to rotate it',
   },
