@@ -9,6 +9,7 @@ export class TileMarker extends Phaser.GameObjects.Graphics {
   private groundLayer!: Phaser.Tilemaps.TilemapLayer;
   private wasLeftButtonDown = false;
   private wasRightButtonDown = false;
+  private inputDelay = 300; // ms to wait before processing input
 
   constructor(
     scene: Phaser.Scene,
@@ -29,6 +30,17 @@ export class TileMarker extends Phaser.GameObjects.Graphics {
   }
 
   update() {
+    // Skip input processing during initial delay to prevent accidental tile draw
+    // when transitioning from menu (mouse button still down from clicking Start)
+    if (this.inputDelay > 0) {
+      this.inputDelay -= this.scene.game.loop.delta;
+      this.wasLeftButtonDown =
+        this.scene.input.manager.activePointer.leftButtonDown();
+      this.wasRightButtonDown =
+        this.scene.input.manager.activePointer.rightButtonDown();
+      return;
+    }
+
     // Convert the mouse position to world position within the camera
     const worldPoint = this.scene.input.activePointer.positionToCamera(
       this.scene.cameras.main,
