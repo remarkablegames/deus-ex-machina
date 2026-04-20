@@ -28,5 +28,6 @@ export const SOUND = {
   JUMP: 'JUMP',
   LOSE: 'LOSE',
   RUN: 'RUN',
+  TYPEWRITER: 'TYPEWRITER',
   WIN: 'WIN',
 } as const;

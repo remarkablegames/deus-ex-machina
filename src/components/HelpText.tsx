@@ -1,5 +1,7 @@
 import { Text, useEffect, useScene, useState } from 'phaser-jsx';
 
+import { KEY } from '../constants';
+
 export function HelpText({
   text,
   speed = 50,
@@ -17,6 +19,11 @@ export function HelpText({
   useEffect(() => {
     let index = 0;
 
+    const typewriterSound = scene.sound.add(KEY.SOUND.TYPEWRITER, {
+      loop: true,
+    });
+    typewriterSound.play();
+
     const timerEvent = scene.time.addEvent({
       delay: speed,
       callback: () => {
@@ -25,6 +32,7 @@ export function HelpText({
           index++;
         } else {
           timerEvent.remove();
+          typewriterSound.destroy();
         }
       },
       loop: true,
@@ -32,6 +40,7 @@ export function HelpText({
 
     return () => {
       timerEvent.remove();
+      typewriterSound.destroy();
     };
   }, []);
 
