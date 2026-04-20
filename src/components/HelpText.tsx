@@ -1,16 +1,13 @@
 import { Text, useEffect, useScene, useState } from 'phaser-jsx';
 
-import { LEVELS } from '../constants';
-
 export function HelpText({
-  level,
+  text,
   speed = 50,
 }: {
-  level: number;
+  text: string;
   speed?: number;
 }) {
   const scene = useScene();
-  const text = LEVELS[level]?.TEXT;
   const [displayText, setDisplayText] = useState('');
 
   if (!text) {

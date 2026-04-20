@@ -130,7 +130,7 @@ export class Main extends Phaser.Scene {
 
     this.tileMarker = new TileMarker(this, map, this.groundLayer);
 
-    render(<HelpText level={this.level.INDEX} />, this);
+    render(<HelpText text={this.level.TEXT} />, this);
   }
 
   update() {
