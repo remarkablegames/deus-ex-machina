@@ -33,6 +33,13 @@ export const LEVELS: Level[] = [
     INDEX: 3,
     MUSIC: KEY.MUSIC.BACKGROUND,
     TILEMAP: 'tilemaps/level3.json',
+    TEXT: "Some blocks can't be erased",
+  },
+
+  {
+    INDEX: 4,
+    MUSIC: KEY.MUSIC.BACKGROUND,
+    TILEMAP: 'tilemaps/level4.json',
     TEXT: '',
   },
 ];

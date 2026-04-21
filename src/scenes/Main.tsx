@@ -122,6 +122,8 @@ export class Main extends Phaser.Scene {
           .setCollision(true);
 
         currentTile!.rotation = tile.rotation;
+      } else if (tile.index === TILE.INDESTRUCTIBLE) {
+        tile.tint = 0x666666;
       }
     });
 

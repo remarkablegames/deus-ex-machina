@@ -85,7 +85,7 @@ export class TileMarker extends Phaser.GameObjects.Graphics {
           worldPoint.y,
         ) as Phaser.Tilemaps.Tile | null;
 
-        if (tile) {
+        if (tile && tile.index !== TILE.INDESTRUCTIBLE) {
           this.groundLayer.removeTileAtWorldXY(worldPoint.x, worldPoint.y);
           this.scene.sound.play(KEY.SOUND.ERASE);
         }
