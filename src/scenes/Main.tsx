@@ -15,6 +15,8 @@ import { TileMarker } from '../graphics';
 import { Player } from '../sprites';
 import { getPlayerConveyorVelocity } from '../utils';
 
+const FADE_DURATION = 150;
+
 export class Main extends Phaser.Scene {
   private groundLayer!: Phaser.Tilemaps.TilemapLayer;
   private player!: Player;
@@ -33,6 +35,8 @@ export class Main extends Phaser.Scene {
 
   create() {
     this.isPlayerDead = false;
+
+    this.cameras.main.fadeIn(FADE_DURATION);
 
     this.sound.stopByKey(KEY.SOUND.TYPEWRITER);
 
@@ -147,6 +151,14 @@ export class Main extends Phaser.Scene {
 
     this.tileMarker = new TileMarker(this, map, this.groundLayer);
 
+    this.input.keyboard?.on('keydown-R', () => {
+      this.sound.play(KEY.SOUND.LOSE);
+      this.cameras.main.fade(FADE_DURATION, 0, 0, 0);
+      this.cameras.main.once('camerafadeoutcomplete', () => {
+        this.scene.restart({ level: this.level.INDEX });
+      });
+    });
+
     render(<HelpText text={this.level.TEXT} />, this);
   }
 
@@ -173,7 +185,7 @@ export class Main extends Phaser.Scene {
 
       this.sound.play(KEY.SOUND.LOSE);
       this.cameras.main.shake(100, 0.01);
-      this.cameras.main.fade(250, 0, 0, 0);
+      this.cameras.main.fade(FADE_DURATION, 0, 0, 0);
 
       // Freeze the player to leave them on screen while fading but remove the marker immediately
       this.player.freeze();
@@ -189,7 +201,7 @@ export class Main extends Phaser.Scene {
     const nextLevel = this.getNextLevel();
     if (nextLevel) {
       this.sound.play(KEY.SOUND.WIN);
-      this.cameras.main.fade(250, 0, 0, 0);
+      this.cameras.main.fade(FADE_DURATION, 0, 0, 0);
       this.cameras.main.once('camerafadeoutcomplete', () => {
         this.scene.start(KEY.SCENE.MAIN, { level: this.level.INDEX + 1 });
       });
