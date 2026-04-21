@@ -12,21 +12,21 @@ export const LEVELS: Level[] = [
     INDEX: 0,
     MUSIC: KEY.MUSIC.INTRO,
     TILEMAP: 'tilemaps/level0.json',
-    TEXT: 'Right-click to erase tile',
+    TEXT: 'Right-click to erase block',
   },
 
   {
     INDEX: 1,
     MUSIC: KEY.MUSIC.INTRO,
     TILEMAP: 'tilemaps/level1.json',
-    TEXT: 'Left-click to draw tile',
+    TEXT: 'Left-click to draw block',
   },
 
   {
     INDEX: 2,
     MUSIC: KEY.MUSIC.CONTINUATION,
     TILEMAP: 'tilemaps/level2.json',
-    TEXT: 'Left-click tile to rotate it',
+    TEXT: 'Left-click block to rotate it',
   },
 
   {
