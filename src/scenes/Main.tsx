@@ -34,10 +34,13 @@ export class Main extends Phaser.Scene {
   create() {
     this.isPlayerDead = false;
 
+    this.sound.stopByKey(KEY.SOUND.TYPEWRITER);
+
     const musicKeys: string[] = Object.values(KEY.MUSIC);
     const playingMusic = this.sound
       .getAllPlaying()
       .find((sound) => musicKeys.includes(sound.key));
+
     if (playingMusic?.key !== this.level.MUSIC) {
       playingMusic?.stop();
       this.sound.play(this.level.MUSIC, { loop: true });
