@@ -8,7 +8,6 @@ export class TileMarker extends Phaser.GameObjects.Graphics {
   private map!: Phaser.Tilemaps.Tilemap;
   private groundLayer!: Phaser.Tilemaps.TilemapLayer;
   private wasLeftButtonDown = false;
-  private wasRightButtonDown = false;
   private inputDelay = 300; // ms to wait before processing input
   private lastTileRotation = Phaser.Math.DegToRad(90);
 
@@ -37,8 +36,6 @@ export class TileMarker extends Phaser.GameObjects.Graphics {
       this.inputDelay -= this.scene.game.loop.delta;
       this.wasLeftButtonDown =
         this.scene.input.manager.activePointer.leftButtonDown();
-      this.wasRightButtonDown =
-        this.scene.input.manager.activePointer.rightButtonDown();
       return;
     }
 
@@ -81,20 +78,17 @@ export class TileMarker extends Phaser.GameObjects.Graphics {
         // don't draw tile if outside of game world
       }
     } else if (activePointer.rightButtonDown()) {
-      if (!this.wasRightButtonDown) {
-        const tile = this.groundLayer.getTileAtWorldXY(
-          worldPoint.x,
-          worldPoint.y,
-        ) as Phaser.Tilemaps.Tile | null;
+      const tile = this.groundLayer.getTileAtWorldXY(
+        worldPoint.x,
+        worldPoint.y,
+      ) as Phaser.Tilemaps.Tile | null;
 
-        if (tile && tile.index !== TILE.INDESTRUCTIBLE) {
-          this.groundLayer.removeTileAtWorldXY(worldPoint.x, worldPoint.y);
-          this.scene.sound.play(KEY.SOUND.ERASE);
-        }
+      if (tile && tile.index !== TILE.INDESTRUCTIBLE) {
+        this.groundLayer.removeTileAtWorldXY(worldPoint.x, worldPoint.y);
+        this.scene.sound.play(KEY.SOUND.ERASE);
       }
     }
 
     this.wasLeftButtonDown = activePointer.leftButtonDown();
-    this.wasRightButtonDown = activePointer.rightButtonDown();
   }
 }
