@@ -87,43 +87,55 @@ export class Main extends Phaser.Scene {
     this.spikeGroup = this.physics.add.staticGroup();
 
     this.groundLayer.forEachTile((tile) => {
-      if (tile.index === TILE.SPIKE) {
-        const spike = this.spikeGroup.create(
-          tile.getCenterX(),
-          tile.getCenterY(),
-          KEY.IMAGE.SPIKE,
-        ) as Phaser.Physics.Arcade.Sprite;
-        const spikeBody = spike.body as Phaser.Physics.Arcade.StaticBody;
+      switch (tile.index) {
+        case TILE.SPIKE: {
+          const spike = this.spikeGroup.create(
+            tile.getCenterX(),
+            tile.getCenterY(),
+            KEY.IMAGE.SPIKE,
+          ) as Phaser.Physics.Arcade.Sprite;
+          const spikeBody = spike.body as Phaser.Physics.Arcade.StaticBody;
 
-        // The map has spikes rotated in Tiled (z key), so parse out that angle to the correct body
-        // placement
-        spike.rotation = tile.rotation;
-        if (spike.angle === 0) {
-          spikeBody.setSize(32, 6).setOffset(0, 26);
-        } else if (spike.angle === -90) {
-          spikeBody.setSize(6, 32).setOffset(26, 0);
-        } else if (spike.angle === 90) {
-          spikeBody.setSize(6, 32).setOffset(0, 0);
+          // The map has spikes rotated in Tiled (z key), so parse out that angle to the correct body
+          // placement
+          spike.rotation = tile.rotation;
+          switch (spike.angle) {
+            case 0:
+              spikeBody.setSize(32, 6).setOffset(0, 26);
+              break;
+            case -90:
+              spikeBody.setSize(6, 32).setOffset(26, 0);
+              break;
+            case 90:
+              spikeBody.setSize(6, 32).setOffset(0, 0);
+              break;
+          }
+
+          this.groundLayer.removeTileAt(tile.x, tile.y);
+          break;
         }
 
-        this.groundLayer.removeTileAt(tile.x, tile.y);
-      } else if (tile.index === TILE.ARROW) {
-        const currentTile = this.groundLayer.getTileAtWorldXY(
-          tile.getCenterX(),
-          tile.getCenterY(),
-        ) as Phaser.Tilemaps.Tile | null;
+        case TILE.ARROW: {
+          const currentTile = this.groundLayer.getTileAtWorldXY(
+            tile.getCenterX(),
+            tile.getCenterY(),
+          ) as Phaser.Tilemaps.Tile | null;
 
-        this.groundLayer
-          .putTileAtWorldXY(
-            TILE.ARROW,
-            currentTile!.getCenterX(),
-            currentTile!.getCenterY(),
-          )
-          .setCollision(true);
+          this.groundLayer
+            .putTileAtWorldXY(
+              TILE.ARROW,
+              currentTile!.getCenterX(),
+              currentTile!.getCenterY(),
+            )
+            .setCollision(true);
 
-        currentTile!.rotation = tile.rotation;
-      } else if (tile.index === TILE.INDESTRUCTIBLE) {
-        tile.tint = 0x666666;
+          currentTile!.rotation = tile.rotation;
+          break;
+        }
+
+        case TILE.INDESTRUCTIBLE:
+          tile.tint = 0x666666;
+          break;
       }
     });
 
