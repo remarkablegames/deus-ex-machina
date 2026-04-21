@@ -10,6 +10,7 @@ export class TileMarker extends Phaser.GameObjects.Graphics {
   private wasLeftButtonDown = false;
   private wasRightButtonDown = false;
   private inputDelay = 300; // ms to wait before processing input
+  private lastTileRotation = Phaser.Math.DegToRad(90);
 
   constructor(
     scene: Phaser.Scene,
@@ -67,12 +68,13 @@ export class TileMarker extends Phaser.GameObjects.Graphics {
 
         if (!this.wasLeftButtonDown && tile?.index === TILE.ARROW) {
           tile.rotation += TileMarker.ROTATION_STEP;
+          this.lastTileRotation = tile.rotation;
           this.scene.sound.play(KEY.SOUND.DRAW);
         } else if (!tile) {
           const newTile = this.groundLayer
             .putTileAtWorldXY(TILE.ARROW, worldPoint.x, worldPoint.y)
             .setCollision(true);
-          newTile.rotation = Phaser.Math.DegToRad(90);
+          newTile.rotation = this.lastTileRotation;
           this.scene.sound.play(KEY.SOUND.DRAW);
         }
       } catch {
