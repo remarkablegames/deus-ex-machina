@@ -87,7 +87,7 @@ export class TileMarker extends Phaser.GameObjects.Sprite {
       worldPoint.x,
       worldPoint.y,
     ) as Phaser.Tilemaps.Tile | null;
-    if (tile) {
+    if (tile && tile.index !== TILE.INDESTRUCTIBLE) {
       this.setVisible(true);
       this.setTint(TINT_COLOR);
     } else {
