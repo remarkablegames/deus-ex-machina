@@ -3,6 +3,10 @@ import Phaser from 'phaser';
 import { KEY, TILE } from '../constants';
 
 const TINT_COLOR = 0xff8000;
+const OUTLINE_OUTER_COLOR = 0xffffff;
+const OUTLINE_INNER_COLOR = 0xff4f78;
+const OUTLINE_OUTER_WIDTH = 5;
+const OUTLINE_INNER_WIDTH = 3;
 
 export class TileMarker extends Phaser.GameObjects.Sprite {
   private static readonly ROTATION_STEP = Phaser.Math.DegToRad(90);
@@ -44,9 +48,9 @@ export class TileMarker extends Phaser.GameObjects.Sprite {
 
   private drawOutline(): void {
     this.outline.clear();
-    this.outline.lineStyle(5, 0xffffff, 1);
+    this.outline.lineStyle(OUTLINE_OUTER_WIDTH, OUTLINE_OUTER_COLOR, 1);
     this.outline.strokeRect(0, 0, this.map.tileWidth, this.map.tileHeight);
-    this.outline.lineStyle(3, 0xff4f78, 1);
+    this.outline.lineStyle(OUTLINE_INNER_WIDTH, OUTLINE_INNER_COLOR, 1);
     this.outline.strokeRect(0, 0, this.map.tileWidth, this.map.tileHeight);
   }
 
