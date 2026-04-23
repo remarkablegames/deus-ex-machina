@@ -2,7 +2,9 @@ import Phaser from 'phaser';
 
 import { KEY, TILE } from '../constants';
 
-export class TileMarker extends Phaser.GameObjects.Graphics {
+const TINT_COLOR = 0xff8000;
+
+export class TileMarker extends Phaser.GameObjects.Sprite {
   private static readonly ROTATION_STEP = Phaser.Math.DegToRad(90);
 
   private map!: Phaser.Tilemaps.Tilemap;
@@ -10,23 +12,42 @@ export class TileMarker extends Phaser.GameObjects.Graphics {
   private wasLeftButtonDown = false;
   private inputDelay = 300; // ms to wait before processing input
   private lastTileRotation = Phaser.Math.DegToRad(90);
+  private outline: Phaser.GameObjects.Graphics;
 
   constructor(
     scene: Phaser.Scene,
     map: Phaser.Tilemaps.Tilemap,
     groundLayer: Phaser.Tilemaps.TilemapLayer,
   ) {
-    super(scene);
+    // Create a transparent texture for the sprite
+    const textureKey = 'tile-marker';
+    if (!scene.textures.exists(textureKey)) {
+      const graphics = scene.add.graphics();
+      graphics.fillStyle(0xffffff, 0.2);
+      graphics.fillRect(0, 0, map.tileWidth, map.tileHeight);
+      graphics.generateTexture(textureKey, map.tileWidth, map.tileHeight);
+      graphics.destroy();
+    }
+
+    super(scene, 0, 0, textureKey);
+
     this.map = map;
     this.groundLayer = groundLayer;
 
-    this.lineStyle(5, 0xffffff, 1);
-    this.strokeRect(0, 0, map.tileWidth, map.tileHeight);
-    this.lineStyle(3, 0xff4f78, 1);
-    this.strokeRect(0, 0, map.tileWidth, map.tileHeight);
-
-    // Add the graphic to the scene
+    // Add the sprite to the scene
     scene.add.existing(this);
+
+    // Create outline graphics
+    this.outline = scene.add.graphics();
+    this.drawOutline();
+  }
+
+  private drawOutline(): void {
+    this.outline.clear();
+    this.outline.lineStyle(5, 0xffffff, 1);
+    this.outline.strokeRect(0, 0, this.map.tileWidth, this.map.tileHeight);
+    this.outline.lineStyle(3, 0xff4f78, 1);
+    this.outline.strokeRect(0, 0, this.map.tileWidth, this.map.tileHeight);
   }
 
   update() {
@@ -51,23 +72,39 @@ export class TileMarker extends Phaser.GameObjects.Graphics {
       pointerTileXY.x,
       pointerTileXY.y,
     )!;
-    this.setPosition(snappedWorldPoint.x, snappedWorldPoint.y);
+    this.setPosition(
+      snappedWorldPoint.x + this.map.tileWidth / 2,
+      snappedWorldPoint.y + this.map.tileHeight / 2,
+    );
+    this.outline.setPosition(snappedWorldPoint.x, snappedWorldPoint.y);
+
+    // Check if tile exists and update tint (any tile on groundLayer is editable)
+    const tile = this.groundLayer.getTileAtWorldXY(
+      worldPoint.x,
+      worldPoint.y,
+    ) as Phaser.Tilemaps.Tile | null;
+    if (tile) {
+      this.setVisible(true);
+      this.setTint(TINT_COLOR);
+    } else {
+      this.setVisible(false);
+    }
 
     // When mouse is down, put a colliding tile at the mouse location
     // Draw or erase tiles (only within the groundLayer)
     const { activePointer } = this.scene.input.manager;
     if (activePointer.leftButtonDown()) {
       try {
-        const tile = this.groundLayer.getTileAtWorldXY(
+        const clickedTile = this.groundLayer.getTileAtWorldXY(
           worldPoint.x,
           worldPoint.y,
         ) as Phaser.Tilemaps.Tile | null;
 
-        if (!this.wasLeftButtonDown && tile?.index === TILE.ARROW) {
-          tile.rotation += TileMarker.ROTATION_STEP;
-          this.lastTileRotation = tile.rotation;
+        if (!this.wasLeftButtonDown && clickedTile?.index === TILE.ARROW) {
+          clickedTile.rotation += TileMarker.ROTATION_STEP;
+          this.lastTileRotation = clickedTile.rotation;
           this.scene.sound.play(KEY.SOUND.DRAW);
-        } else if (!tile) {
+        } else if (!clickedTile) {
           const newTile = this.groundLayer
             .putTileAtWorldXY(TILE.ARROW, worldPoint.x, worldPoint.y)
             .setCollision(true);
