@@ -23,13 +23,13 @@ export class Menu extends Scene {
 
     this.createBackground();
 
-    const { centerX, centerY, height } = this.cameras.main;
+    const { centerX, centerY } = this.cameras.main;
 
     render(
       <Fragment>
         <Text
           x={centerX}
-          y={height / 3}
+          y={centerY - 60}
           text="Deus Ex Machina"
           style={{
             fontSize: 48,
@@ -44,7 +44,7 @@ export class Menu extends Scene {
 
         <Button
           x={centerX}
-          y={centerY}
+          y={centerY + 40}
           text="Start Game"
           onClick={() => {
             this.handleStart();
