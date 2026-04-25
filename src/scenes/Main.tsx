@@ -27,13 +27,18 @@ export class Main extends Phaser.Scene {
   private level!: Level;
   private dustParticles!: Phaser.GameObjects.Particles.ParticleEmitter;
   private budgetTracker!: BudgetTracker;
+  private savedTiles?: { x: number; y: number; rotation: number }[];
 
   constructor() {
     super(KEY.SCENE.MAIN);
   }
 
-  init(data: { level: number }) {
+  init(data: {
+    level: number;
+    savedTiles?: { x: number; y: number; rotation: number }[];
+  }) {
     this.level = LEVELS[data.level] ?? LEVELS[0];
+    this.savedTiles = data.savedTiles;
   }
 
   create() {
@@ -148,13 +153,17 @@ export class Main extends Phaser.Scene {
       map,
       this.groundLayer,
       this.budgetTracker,
+      this.savedTiles,
     );
 
     this.input.keyboard?.on('keydown-R', () => {
       this.sound.play(KEY.SOUND.LOSE);
       this.cameras.main.fade(FADE_DURATION, 0, 0, 0);
       this.cameras.main.once('camerafadeoutcomplete', () => {
-        this.scene.restart({ level: this.level.INDEX });
+        this.scene.restart({
+          level: this.level.INDEX,
+          savedTiles: this.tileMarker.getDrawnTiles(),
+        });
       });
     });
 
@@ -275,7 +284,10 @@ export class Main extends Phaser.Scene {
 
       this.cameras.main.once('camerafadeoutcomplete', () => {
         this.player.destroy();
-        this.scene.restart({ level: this.level.INDEX });
+        this.scene.restart({
+          level: this.level.INDEX,
+          savedTiles: this.tileMarker.getDrawnTiles(),
+        });
       });
     }
   }

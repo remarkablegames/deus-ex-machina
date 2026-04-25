@@ -19,7 +19,7 @@ export class TileMarker extends Phaser.GameObjects.Sprite {
   private lastTileRotation = Phaser.Math.DegToRad(90);
   private outline: Phaser.GameObjects.Graphics;
   private budgetTracker: BudgetTracker | null;
-  private drawnTiles: { x: number; y: number }[] = [];
+  private drawnTiles: { x: number; y: number; rotation: number }[] = [];
   private uiBlockers: Phaser.GameObjects.GameObject[] = [];
 
   constructor(
@@ -27,6 +27,7 @@ export class TileMarker extends Phaser.GameObjects.Sprite {
     map: Phaser.Tilemaps.Tilemap,
     groundLayer: Phaser.Tilemaps.TilemapLayer,
     budgetTracker?: BudgetTracker,
+    savedTiles?: { x: number; y: number; rotation: number }[],
   ) {
     // Create a transparent texture for the sprite
     const textureKey = 'tile-marker';
@@ -43,6 +44,11 @@ export class TileMarker extends Phaser.GameObjects.Sprite {
     this.map = map;
     this.groundLayer = groundLayer;
     this.budgetTracker = budgetTracker ?? null;
+
+    // Restore saved tiles if provided
+    if (savedTiles) {
+      this.restoreTiles(savedTiles);
+    }
 
     // Add the sprite to the scene
     scene.add.existing(this);
@@ -114,13 +120,23 @@ export class TileMarker extends Phaser.GameObjects.Sprite {
         if (!this.wasLeftButtonDown && clickedTile?.index === TILE.ARROW) {
           clickedTile.rotation += TileMarker.ROTATION_STEP;
           this.lastTileRotation = clickedTile.rotation;
+          const existingTile = this.drawnTiles.find(
+            (t) => t.x === clickedTile.x && t.y === clickedTile.y,
+          );
+          if (existingTile) {
+            existingTile.rotation = clickedTile.rotation;
+          }
           this.scene.sound.play(KEY.SOUND.DRAW);
         } else if (!clickedTile && this.budgetTracker?.canDraw()) {
           const newTile = this.groundLayer
             .putTileAtWorldXY(TILE.ARROW, worldPoint.x, worldPoint.y)
             .setCollision(true);
           newTile.rotation = this.lastTileRotation;
-          this.drawnTiles.push({ x: newTile.x, y: newTile.y });
+          this.drawnTiles.push({
+            x: newTile.x,
+            y: newTile.y,
+            rotation: newTile.rotation,
+          });
           this.budgetTracker.recordDraw();
           this.scene.sound.play(KEY.SOUND.DRAW);
         }
@@ -186,5 +202,27 @@ export class TileMarker extends Phaser.GameObjects.Sprite {
     }
     this.drawnTiles = [];
     this.budgetTracker?.reset();
+  }
+
+  getDrawnTiles(): { x: number; y: number; rotation: number }[] {
+    return this.drawnTiles;
+  }
+
+  private restoreTiles(
+    tiles: { x: number; y: number; rotation: number }[],
+  ): void {
+    for (const { x, y, rotation } of tiles) {
+      const existingTile = this.groundLayer.getTileAt(
+        x,
+        y,
+      ) as Phaser.Tilemaps.Tile | null;
+      if (!existingTile) {
+        const newTile = this.groundLayer.putTileAt(TILE.ARROW, x, y);
+        newTile.setCollision(true);
+        newTile.rotation = rotation;
+        this.budgetTracker?.recordDraw();
+      }
+    }
+    this.drawnTiles = tiles;
   }
 }
