@@ -164,6 +164,42 @@ export class Main extends Phaser.Scene {
     render(<HelpText text={this.level.TEXT} />, this);
 
     this.createDustParticles(map);
+    this.createLightRays(map);
+  }
+
+  private createLightRays(map: Phaser.Tilemaps.Tilemap) {
+    const rayCount = 3;
+    const rayWidth = Phaser.Math.Between(80, 100);
+    const rayHeight = map.heightInPixels * 0.7;
+
+    for (let i = 0; i < rayCount; i++) {
+      const x = (map.widthInPixels / (rayCount + 1)) * (i + 1);
+      const ray = this.add.graphics();
+
+      ray.fillGradientStyle(
+        0xffffff,
+        0xffffff,
+        0xffffff,
+        0xffffff,
+        0.15,
+        0.15,
+        0,
+        0,
+      );
+      ray.fillRect(-rayWidth / 2, 0, rayWidth, rayHeight);
+      ray.setPosition(x, 0);
+      ray.setBlendMode('ADD');
+      ray.setDepth(-0.5);
+
+      this.tweens.add({
+        targets: ray,
+        alpha: { from: 0.1, to: 0.2 },
+        duration: 3000 + i * 1000,
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.easeInOut',
+      });
+    }
   }
 
   private createDustParticles(map: Phaser.Tilemaps.Tilemap) {
