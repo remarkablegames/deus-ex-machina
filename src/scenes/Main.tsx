@@ -158,15 +158,28 @@ export class Main extends Phaser.Scene {
       });
     });
 
+    const uiBlockers: Phaser.GameObjects.GameObject[] = [];
+    const collectUIBlocker = (go: Phaser.GameObjects.GameObject) => {
+      uiBlockers.push(go);
+    };
+
     render(
       <Container y={16}>
-        <HelpText text={this.level.TEXT} />
+        <HelpText text={this.level.TEXT} ref={collectUIBlocker} />
         {this.level.BUDGET !== undefined && (
-          <BudgetDisplay budgetTracker={this.budgetTracker} />
+          <BudgetDisplay
+            budgetTracker={this.budgetTracker}
+            onReset={() => {
+              this.tileMarker.resetDrawnTiles();
+            }}
+            ref={collectUIBlocker}
+          />
         )}
       </Container>,
       this,
     );
+
+    this.tileMarker.setUIBlockers(uiBlockers);
 
     this.createDustParticles(map);
     this.createLightRays(map);

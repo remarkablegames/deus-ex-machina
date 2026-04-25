@@ -19,6 +19,8 @@ export class TileMarker extends Phaser.GameObjects.Sprite {
   private lastTileRotation = Phaser.Math.DegToRad(90);
   private outline: Phaser.GameObjects.Graphics;
   private budgetTracker: BudgetTracker | null;
+  private drawnTiles: { x: number; y: number }[] = [];
+  private uiBlockers: Phaser.GameObjects.GameObject[] = [];
 
   constructor(
     scene: Phaser.Scene,
@@ -102,7 +104,7 @@ export class TileMarker extends Phaser.GameObjects.Sprite {
     // When mouse is down, put a colliding tile at the mouse location
     // Draw or erase tiles (only within the groundLayer)
     const { activePointer } = this.scene.input.manager;
-    if (activePointer.leftButtonDown()) {
+    if (activePointer.leftButtonDown() && !this.isPointerOverUI()) {
       try {
         const clickedTile = this.groundLayer.getTileAtWorldXY(
           worldPoint.x,
@@ -118,13 +120,14 @@ export class TileMarker extends Phaser.GameObjects.Sprite {
             .putTileAtWorldXY(TILE.ARROW, worldPoint.x, worldPoint.y)
             .setCollision(true);
           newTile.rotation = this.lastTileRotation;
+          this.drawnTiles.push({ x: newTile.x, y: newTile.y });
           this.budgetTracker.recordDraw();
           this.scene.sound.play(KEY.SOUND.DRAW);
         }
       } catch {
         // don't draw tile if outside of game world
       }
-    } else if (activePointer.rightButtonDown()) {
+    } else if (activePointer.rightButtonDown() && !this.isPointerOverUI()) {
       const tile = this.groundLayer.getTileAtWorldXY(
         worldPoint.x,
         worldPoint.y,
@@ -134,6 +137,9 @@ export class TileMarker extends Phaser.GameObjects.Sprite {
         const wasArrow = tile.index === TILE.ARROW;
         this.groundLayer.removeTileAtWorldXY(worldPoint.x, worldPoint.y);
         if (wasArrow) {
+          this.drawnTiles = this.drawnTiles.filter(
+            (t) => t.x !== tile.x || t.y !== tile.y,
+          );
           this.budgetTracker?.recordErase();
         }
         this.scene.sound.play(KEY.SOUND.ERASE);
@@ -141,5 +147,44 @@ export class TileMarker extends Phaser.GameObjects.Sprite {
     }
 
     this.wasLeftButtonDown = activePointer.leftButtonDown();
+  }
+
+  setUIBlockers(objects: Phaser.GameObjects.GameObject[]): void {
+    this.uiBlockers = objects;
+  }
+
+  private isPointerOverUI(): boolean {
+    const { x, y } = this.scene.input.manager.activePointer;
+    const camera = this.scene.cameras.main;
+
+    for (const obj of this.uiBlockers) {
+      const go = obj as Phaser.GameObjects.Text;
+      if (typeof go.getBounds !== 'function') {
+        continue;
+      }
+      const bounds = go.getBounds();
+      const screenX = (bounds.x - camera.scrollX) * camera.zoom + camera.x;
+      const screenY = (bounds.y - camera.scrollY) * camera.zoom + camera.y;
+      const screenW = bounds.width * camera.zoom;
+      const screenH = bounds.height * camera.zoom;
+
+      if (
+        x >= screenX &&
+        x <= screenX + screenW &&
+        y >= screenY &&
+        y <= screenY + screenH
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  resetDrawnTiles(): void {
+    for (const { x, y } of this.drawnTiles) {
+      this.groundLayer.removeTileAt(x, y);
+    }
+    this.drawnTiles = [];
+    this.budgetTracker?.reset();
   }
 }

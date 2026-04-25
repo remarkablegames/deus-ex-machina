@@ -28,6 +28,13 @@ export class BudgetTracker {
     }
   }
 
+  reset(): void {
+    if (!this.isInfinite()) {
+      this.remaining = this.max;
+      this.notifyListeners();
+    }
+  }
+
   getRemaining(): number {
     return this.remaining;
   }

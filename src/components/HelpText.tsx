@@ -5,9 +5,10 @@ import { KEY } from '../constants';
 interface HelpTextProps {
   text: string;
   speed?: number;
+  ref?: (gameObject: Phaser.GameObjects.GameObject) => void;
 }
 
-export function HelpText({ text, speed = 50 }: HelpTextProps) {
+export function HelpText({ text, speed = 50, ref }: HelpTextProps) {
   const scene = useScene();
   const [displayText, setDisplayText] = useState('');
 
@@ -65,6 +66,7 @@ export function HelpText({ text, speed = 50 }: HelpTextProps) {
         font: '18px monospace',
         padding: { x: 15, y: 10 },
       }}
+      ref={ref}
     />
   );
 }

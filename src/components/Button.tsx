@@ -6,17 +6,27 @@ const BACKGROUND_COLOR = '#2d3142';
 const BACKGROUND_COLOR_HOVER = '#4a4e69';
 const TEXT_COLOR = '#fff';
 
+interface ButtonProps {
+  x: number;
+  y: number;
+  text: string;
+  onClick: () => void;
+  originX?: number;
+  originY?: number;
+  style?: Phaser.Types.GameObjects.Text.TextStyle;
+  ref?: (gameObject: Phaser.GameObjects.GameObject) => void;
+}
+
 export function Button({
   x,
   y,
   text,
   onClick,
-}: {
-  x: number;
-  y: number;
-  text: string;
-  onClick: () => void;
-}) {
+  originX = 0.5,
+  originY = 0.5,
+  style,
+  ref,
+}: ButtonProps) {
   const scene = useScene();
 
   return (
@@ -30,9 +40,11 @@ export function Button({
         color: TEXT_COLOR,
         backgroundColor: BACKGROUND_COLOR,
         padding: { x: 24, y: 16 },
+        ...style,
       }}
-      originX={0.5}
-      originY={0.5}
+      originX={originX}
+      originY={originY}
+      ref={ref}
       input={{ cursor: 'pointer' }}
       onPointerOver={(_pointer, gameObject) => {
         const text = gameObject as Phaser.GameObjects.Text;
