@@ -19,14 +19,14 @@ export const LEVELS: Level[] = [
     INDEX: 1,
     MUSIC: KEY.MUSIC.INTRO,
     TILEMAP: 'tilemaps/level1.json',
-    TEXT: 'Left-click to draw block',
+    TEXT: 'Left-click to draw arrow block',
   },
 
   {
     INDEX: 2,
     MUSIC: KEY.MUSIC.CONTINUATION,
     TILEMAP: 'tilemaps/level2.json',
-    TEXT: 'Left-click block to rotate it',
+    TEXT: 'Left-click arrow block to rotate it',
   },
 
   {
