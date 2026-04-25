@@ -31,7 +31,7 @@ export const LEVELS: Level[] = [
 
   {
     INDEX: 3,
-    MUSIC: KEY.MUSIC.BACKGROUND,
+    MUSIC: KEY.MUSIC.CONTINUATION,
     TILEMAP: 'tilemaps/level3.json',
     TEXT: "Some blocks can't be erased",
   },
