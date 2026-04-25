@@ -87,7 +87,8 @@ export class TileMarker extends Phaser.GameObjects.Sprite {
       worldPoint.x,
       worldPoint.y,
     ) as Phaser.Tilemaps.Tile | null;
-    if (tile && tile.index !== TILE.INDESTRUCTIBLE) {
+
+    if (tile && tile.index !== TILE.PERMANENT) {
       this.setVisible(true);
       this.setTint(TINT_COLOR);
     } else {
@@ -124,7 +125,7 @@ export class TileMarker extends Phaser.GameObjects.Sprite {
         worldPoint.y,
       ) as Phaser.Tilemaps.Tile | null;
 
-      if (tile && tile.index !== TILE.INDESTRUCTIBLE) {
+      if (tile && tile.index !== TILE.PERMANENT) {
         this.groundLayer.removeTileAtWorldXY(worldPoint.x, worldPoint.y);
         this.scene.sound.play(KEY.SOUND.ERASE);
       }

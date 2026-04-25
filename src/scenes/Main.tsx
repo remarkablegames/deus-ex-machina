@@ -137,8 +137,8 @@ export class Main extends Phaser.Scene {
           break;
         }
 
-        case TILE.INDESTRUCTIBLE:
-          tile.tint = 0x666666;
+        case TILE.PERMANENT:
+          tile.tint = 0x555555;
           break;
       }
     });

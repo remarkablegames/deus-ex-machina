@@ -14,6 +14,6 @@ export const TILEMAP_OBJECT = {
 
 export const TILE = {
   ARROW: 162,
-  INDESTRUCTIBLE: 54,
+  PERMANENT: 54,
   SPIKE: 77,
 } as const;
