@@ -13,6 +13,8 @@ Play the game on:
 
 ## Credits
 
+- [Victor H (Music Composer)](https://vhsm3.itch.io/)
+- [Mark (Programmer)](https://github.com/remarkablemark)
 - [Kenney Interface Sounds](https://kenney.nl/assets/interface-sounds)
 - [Menu SFX Pack](https://hitrison.itch.io/menu-sfx-pack)
 - [Typewriter Machine](https://pixabay.com/sound-effects/film-special-effects-typewriter-machine-64191/)
