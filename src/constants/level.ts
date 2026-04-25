@@ -40,6 +40,13 @@ export const LEVELS: Level[] = [
     INDEX: 4,
     MUSIC: KEY.MUSIC.BACKGROUND,
     TILEMAP: 'tilemaps/level4.json',
+    TEXT: 'Watch out for spikes',
+  },
+
+  {
+    INDEX: 5,
+    MUSIC: KEY.MUSIC.BACKGROUND,
+    TILEMAP: 'tilemaps/level5.json',
     TEXT: '',
   },
 ];
