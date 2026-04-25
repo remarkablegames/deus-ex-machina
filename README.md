@@ -14,8 +14,7 @@ Play the game on:
 ## Credits
 
 - [Kenney Interface Sounds](https://kenney.nl/assets/interface-sounds)
-- [Person Running - LOOP](https://pixabay.com/sound-effects/film-special-effects-person-running-loop-245173/)
-- [Typewriter Machine](https://pixabay.com/sound-effects/film-special-effects-typewriter-machine-64191/)
+- [Menu SFX Pack](https://hitrison.itch.io/menu-sfx-pack)
 
 ## Prerequisites
 
