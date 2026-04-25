@@ -35,15 +35,15 @@ export function Button({
       originY={0.5}
       input={{ cursor: 'pointer' }}
       onPointerOver={(_pointer, gameObject) => {
-        (gameObject as Phaser.GameObjects.Text).setBackgroundColor(
-          BACKGROUND_COLOR_HOVER,
-        );
+        const text = gameObject as Phaser.GameObjects.Text;
+        text.setBackgroundColor(BACKGROUND_COLOR_HOVER);
+        text.setScale(1.02);
         scene.sound.play(KEY.SOUND.HOVER);
       }}
       onPointerOut={(_pointer, gameObject) => {
-        (gameObject as Phaser.GameObjects.Text).setBackgroundColor(
-          BACKGROUND_COLOR,
-        );
+        const text = gameObject as Phaser.GameObjects.Text;
+        text.setBackgroundColor(BACKGROUND_COLOR);
+        text.setScale(1);
       }}
       onPointerDown={() => {
         scene.sound.play(KEY.SOUND.CLICK);
