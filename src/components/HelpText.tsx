@@ -38,9 +38,17 @@ export function HelpText({
       loop: true,
     });
 
+    const onShutdown = () => {
+      timerEvent.remove();
+      typewriterSound.destroy();
+    };
+
+    scene.events.once('shutdown', onShutdown);
+
     return () => {
       timerEvent.remove();
       typewriterSound.destroy();
+      scene.events.off('shutdown', onShutdown);
     };
   }, []);
 

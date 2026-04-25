@@ -15,7 +15,7 @@ import { TileMarker } from '../graphics';
 import { Player } from '../sprites';
 import { getPlayerConveyorVelocity } from '../utils';
 
-const FADE_DURATION = 150;
+const FADE_DURATION = 200;
 const DUST_SPEED = 5;
 
 export class Main extends Phaser.Scene {
@@ -78,7 +78,7 @@ export class Main extends Phaser.Scene {
 
       const winOverlap = this.physics.add.overlap(this.player, winZone, () => {
         this.physics.world.removeCollider(winOverlap);
-        this.handleWin();
+        this.handleWin({ x: winPoint.x!, y: winPoint.y! });
       });
     }
 
@@ -252,15 +252,36 @@ export class Main extends Phaser.Scene {
     }
   }
 
-  private handleWin() {
+  private handleWin(winPosition: { x: number; y: number }) {
     const nextLevel = this.getNextLevel();
     if (nextLevel) {
+      this.createWinParticles(winPosition.x, winPosition.y);
       this.sound.play(KEY.SOUND.WIN);
-      this.cameras.main.fade(FADE_DURATION, 0, 0, 0);
+      this.cameras.main.fade(FADE_DURATION * 2, 0, 0, 0);
       this.cameras.main.once('camerafadeoutcomplete', () => {
         this.scene.start(KEY.SCENE.MAIN, { level: nextLevel.INDEX });
       });
     }
+  }
+
+  private createWinParticles(x: number, y: number) {
+    const colors = [0xffd700, 0x00ff00, 0x00bfff, 0xffffff];
+
+    const particles = this.add.particles(0, 0, 'dust', {
+      x,
+      y,
+      speed: { min: 50, max: 150 },
+      angle: { min: 0, max: 360 },
+      scale: { start: 0.8, end: 0 },
+      lifespan: 800,
+      gravityY: 200,
+      quantity: 30,
+      tint: colors,
+      blendMode: 'ADD',
+      emitting: false,
+    });
+
+    particles.explode();
   }
 
   private getNextLevel(): Level | null {
