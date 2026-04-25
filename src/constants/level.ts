@@ -28,7 +28,6 @@ export const LEVELS: Level[] = [
     MUSIC: KEY.MUSIC.INTRO,
     TILEMAP: 'tilemaps/level2.json',
     TEXT: 'Left-click to draw arrow block',
-    BUDGET: 21,
   },
 
   {
