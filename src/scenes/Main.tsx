@@ -16,6 +16,7 @@ import { Player } from '../sprites';
 import { getPlayerConveyorVelocity } from '../utils';
 
 const FADE_DURATION = 150;
+const DUST_SPEED = 5;
 
 export class Main extends Phaser.Scene {
   private groundLayer!: Phaser.Tilemaps.TilemapLayer;
@@ -24,6 +25,7 @@ export class Main extends Phaser.Scene {
   private tileMarker!: TileMarker;
   private isPlayerDead = false;
   private level!: Level;
+  private dustParticles!: Phaser.GameObjects.Particles.ParticleEmitter;
 
   constructor() {
     super(KEY.SCENE.MAIN);
@@ -160,6 +162,33 @@ export class Main extends Phaser.Scene {
     });
 
     render(<HelpText text={this.level.TEXT} />, this);
+
+    this.createDustParticles(map);
+  }
+
+  private createDustParticles(map: Phaser.Tilemaps.Tilemap) {
+    const TEXTURE_KEY = 'dust';
+
+    const texture = this.make.graphics({ x: 0, y: 0 });
+    texture.fillStyle(0x888888, 1);
+    texture.fillCircle(2, 2, 2);
+    texture.generateTexture(TEXTURE_KEY, 4, 4);
+    texture.destroy();
+
+    this.dustParticles = this.add.particles(0, 0, TEXTURE_KEY, {
+      x: { min: 0, max: map.widthInPixels },
+      y: { min: 0, max: map.heightInPixels },
+      lifespan: 6000,
+      speedY: { min: -DUST_SPEED, max: -DUST_SPEED * 2 },
+      speedX: { min: -2, max: 2 },
+      scale: { min: 0.3, max: 0.6 },
+      alpha: { start: 0.4, end: 0.1 },
+      quantity: 1,
+      frequency: 100,
+      blendMode: 'ADD',
+    });
+
+    this.dustParticles.setDepth(-1);
   }
 
   update() {
