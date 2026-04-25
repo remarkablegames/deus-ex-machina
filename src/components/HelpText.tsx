@@ -2,13 +2,12 @@ import { Text, useEffect, useScene, useState } from 'phaser-jsx';
 
 import { KEY } from '../constants';
 
-export function HelpText({
-  text,
-  speed = 50,
-}: {
+interface HelpTextProps {
   text: string;
   speed?: number;
-}) {
+}
+
+export function HelpText({ text, speed = 50 }: HelpTextProps) {
   const scene = useScene();
   const [displayText, setDisplayText] = useState('');
 
