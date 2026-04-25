@@ -35,6 +35,10 @@ Code style:
 - [Prettier](./.prettierrc.json) for formatting
 - [ESLint](./eslint.config.mts) for lint constraints (import sorting)
 
+Asset loading:
+
+- Load all assets in `src/scenes/Boot.ts` `preload()`
+
 Examples:
 
 ```ts
@@ -61,5 +65,18 @@ gameObj = this.add.image(0, 0, 'my-image-key');
 
 ## File Structure
 
-- `src/` – code
-- `public/` – assets
+```
+src/
+├── components/
+├── constants/
+├── graphics/
+├── scenes/
+├── sprites/
+├── types/
+└── utils/
+public/
+├── music/
+├── sounds/
+├── sprites/
+└── tilemaps/
+```
