@@ -41,9 +41,10 @@ export class Boot extends Scene {
 
   create() {
     const params = new URLSearchParams(window.location.search);
-    const level = parseInt(params.get('level')!, 10);
+    const levelParam = params.get('level');
+    const level = levelParam !== null ? parseInt(levelParam, 10) : NaN;
 
-    if (level >= 0) {
+    if (!isNaN(level) && level >= 0) {
       this.scene.start(KEY.SCENE.MAIN, { level });
     } else {
       this.scene.start(KEY.SCENE.MENU);
