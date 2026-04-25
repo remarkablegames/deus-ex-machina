@@ -35,7 +35,7 @@ export const LEVELS: Level[] = [
     INDEX: 3,
     MUSIC: KEY.MUSIC.CONTINUATION,
     TILEMAP: 'tilemaps/level3.json',
-    TEXT: 'Press R to restart',
+    TEXT: 'There are a limited number of arrows',
     BUDGET: 10,
   },
 
@@ -43,22 +43,30 @@ export const LEVELS: Level[] = [
     INDEX: 4,
     MUSIC: KEY.MUSIC.CONTINUATION,
     TILEMAP: 'tilemaps/level4.json',
-    TEXT: "Some blocks can't be erased",
+    TEXT: 'Some blocks are permanent',
     BUDGET: 30,
   },
 
   {
     INDEX: 5,
-    MUSIC: KEY.MUSIC.BACKGROUND,
+    MUSIC: KEY.MUSIC.CONTINUATION,
     TILEMAP: 'tilemaps/level5.json',
-    TEXT: 'Watch out for spikes',
-    BUDGET: 30,
+    TEXT: 'Think outside the box',
+    BUDGET: 5,
   },
 
   {
     INDEX: 6,
     MUSIC: KEY.MUSIC.BACKGROUND,
     TILEMAP: 'tilemaps/level6.json',
+    TEXT: 'Watch out for spikes',
+    BUDGET: 30,
+  },
+
+  {
+    INDEX: 7,
+    MUSIC: KEY.MUSIC.BACKGROUND,
+    TILEMAP: 'tilemaps/level7.json',
     TEXT: '',
     BUDGET: 30,
   },
