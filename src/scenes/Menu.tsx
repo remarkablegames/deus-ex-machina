@@ -9,9 +9,13 @@ const BACKGROUND_TILES = [
   17, 18, 19, 49, 50, 51, 80, 81, 82, 112, 113, 114, 145, 146, 147,
 ];
 
+const PLAYER_RUN_SPEED = 100;
+const PLAYER_SCALE = 1.5;
+
 export class Menu extends Scene {
   private backgroundLayer!: Phaser.Tilemaps.TilemapLayer;
   private scrollAccumulator = 0;
+  private runner!: Phaser.GameObjects.Sprite;
 
   constructor() {
     super(KEY.SCENE.MENU);
@@ -53,6 +57,28 @@ export class Menu extends Scene {
       </Fragment>,
       this,
     );
+
+    this.createRunner();
+  }
+
+  private createRunner() {
+    const { height } = this.cameras.main;
+    const ANIMATION_KEY = 'MENU_RUN';
+
+    this.anims.create({
+      key: ANIMATION_KEY,
+      frames: this.anims.generateFrameNumbers(KEY.SPRITESHEET.PLAYER, {
+        start: 8,
+        end: 15,
+      }),
+      frameRate: 12,
+      repeat: -1,
+    });
+
+    this.runner = this.add
+      .sprite(-32, height - 40, KEY.SPRITESHEET.PLAYER)
+      .setScale(PLAYER_SCALE)
+      .play(ANIMATION_KEY);
   }
 
   update(_time: number, delta: number) {
@@ -64,6 +90,11 @@ export class Menu extends Scene {
     if (this.scrollAccumulator >= screenWidth) {
       this.scrollAccumulator -= screenWidth;
       this.backgroundLayer.x -= screenWidth;
+    }
+
+    this.runner.x += (PLAYER_RUN_SPEED * delta) / 1000;
+    if (this.runner.x > screenWidth + 32) {
+      this.runner.x = -32;
     }
   }
 
