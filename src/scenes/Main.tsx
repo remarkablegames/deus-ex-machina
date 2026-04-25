@@ -122,20 +122,10 @@ export class Main extends Phaser.Scene {
         }
 
         case TILE.ARROW: {
-          const currentTile = this.groundLayer.getTileAtWorldXY(
-            tile.getCenterX(),
-            tile.getCenterY(),
-          ) as Phaser.Tilemaps.Tile | null;
-
-          this.groundLayer
-            .putTileAtWorldXY(
-              TILE.ARROW,
-              currentTile!.getCenterX(),
-              currentTile!.getCenterY(),
-            )
+          const newTile = this.groundLayer
+            .putTileAtWorldXY(TILE.ARROW, tile.getCenterX(), tile.getCenterY())
             .setCollision(true);
-
-          currentTile!.rotation = tile.rotation;
+          newTile.rotation = tile.rotation;
           break;
         }
 
@@ -257,7 +247,7 @@ export class Main extends Phaser.Scene {
 
       this.cameras.main.once('camerafadeoutcomplete', () => {
         this.player.destroy();
-        this.scene.restart();
+        this.scene.restart({ level: this.level.INDEX });
       });
     }
   }
@@ -268,7 +258,7 @@ export class Main extends Phaser.Scene {
       this.sound.play(KEY.SOUND.WIN);
       this.cameras.main.fade(FADE_DURATION, 0, 0, 0);
       this.cameras.main.once('camerafadeoutcomplete', () => {
-        this.scene.start(KEY.SCENE.MAIN, { level: this.level.INDEX + 1 });
+        this.scene.start(KEY.SCENE.MAIN, { level: nextLevel.INDEX });
       });
     }
   }
