@@ -5,6 +5,7 @@ export interface Level {
   MUSIC: string;
   TILEMAP: string;
   TEXT: string;
+  BUDGET?: number;
 }
 
 export const LEVELS: Level[] = [
@@ -20,6 +21,7 @@ export const LEVELS: Level[] = [
     MUSIC: KEY.MUSIC.INTRO,
     TILEMAP: 'tilemaps/level1.json',
     TEXT: 'Left-click to draw arrow block',
+    BUDGET: 21,
   },
 
   {
@@ -27,6 +29,7 @@ export const LEVELS: Level[] = [
     MUSIC: KEY.MUSIC.CONTINUATION,
     TILEMAP: 'tilemaps/level2.json',
     TEXT: 'Left-click arrow block to rotate it',
+    BUDGET: 15,
   },
 
   {
@@ -34,6 +37,7 @@ export const LEVELS: Level[] = [
     MUSIC: KEY.MUSIC.CONTINUATION,
     TILEMAP: 'tilemaps/level3.json',
     TEXT: "Some blocks can't be erased",
+    BUDGET: 30,
   },
 
   {
@@ -41,6 +45,7 @@ export const LEVELS: Level[] = [
     MUSIC: KEY.MUSIC.BACKGROUND,
     TILEMAP: 'tilemaps/level4.json',
     TEXT: 'Watch out for spikes',
+    BUDGET: 30,
   },
 
   {
@@ -48,5 +53,6 @@ export const LEVELS: Level[] = [
     MUSIC: KEY.MUSIC.BACKGROUND,
     TILEMAP: 'tilemaps/level5.json',
     TEXT: '',
+    BUDGET: 30,
   },
 ];

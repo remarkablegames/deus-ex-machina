@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
-import { render } from 'phaser-jsx';
+import { Container, render } from 'phaser-jsx';
 
-import { HelpText } from '../components';
+import { BudgetDisplay, HelpText } from '../components';
 import {
   KEY,
   type Level,
@@ -13,7 +13,7 @@ import {
 } from '../constants';
 import { TileMarker } from '../graphics';
 import { Player } from '../sprites';
-import { getPlayerConveyorVelocity } from '../utils';
+import { BudgetTracker, getPlayerConveyorVelocity } from '../utils';
 
 const FADE_DURATION = 200;
 const DUST_SPEED = 5;
@@ -26,6 +26,7 @@ export class Main extends Phaser.Scene {
   private isPlayerDead = false;
   private level!: Level;
   private dustParticles!: Phaser.GameObjects.Particles.ParticleEmitter;
+  private budgetTracker!: BudgetTracker;
 
   constructor() {
     super(KEY.SCENE.MAIN);
@@ -141,7 +142,13 @@ export class Main extends Phaser.Scene {
     this.cameras.main.setZoom(zoom);
     this.cameras.main.centerOn(map.widthInPixels / 2, map.heightInPixels / 2);
 
-    this.tileMarker = new TileMarker(this, map, this.groundLayer);
+    this.budgetTracker = new BudgetTracker(this.level.BUDGET ?? Infinity);
+    this.tileMarker = new TileMarker(
+      this,
+      map,
+      this.groundLayer,
+      this.budgetTracker,
+    );
 
     this.input.keyboard?.on('keydown-R', () => {
       this.sound.play(KEY.SOUND.LOSE);
@@ -151,7 +158,15 @@ export class Main extends Phaser.Scene {
       });
     });
 
-    render(<HelpText text={this.level.TEXT} />, this);
+    render(
+      <Container y={16}>
+        <HelpText text={this.level.TEXT} />
+        {this.level.BUDGET !== undefined && (
+          <BudgetDisplay budgetTracker={this.budgetTracker} />
+        )}
+      </Container>,
+      this,
+    );
 
     this.createDustParticles(map);
     this.createLightRays(map);

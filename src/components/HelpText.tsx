@@ -59,16 +59,13 @@ export function HelpText({
   return (
     <Text
       x={16}
-      y={16}
       text={displayText}
       style={{
         backgroundColor: '#fff',
         color: '#000',
         font: '18px monospace',
-        padding: { x: 20, y: 10 },
+        padding: { x: 15, y: 10 },
       }}
-      scrollFactorX={0}
-      scrollFactorY={0}
     />
   );
 }

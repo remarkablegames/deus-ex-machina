@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import { KEY, TILE } from '../constants';
+import { BudgetTracker } from '../utils';
 
 const TINT_COLOR = 0xff8000;
 const OUTLINE_OUTER_COLOR = 0xffffff;
@@ -17,11 +18,13 @@ export class TileMarker extends Phaser.GameObjects.Sprite {
   private inputDelay = 300; // ms to wait before processing input
   private lastTileRotation = Phaser.Math.DegToRad(90);
   private outline: Phaser.GameObjects.Graphics;
+  private budgetTracker: BudgetTracker | null;
 
   constructor(
     scene: Phaser.Scene,
     map: Phaser.Tilemaps.Tilemap,
     groundLayer: Phaser.Tilemaps.TilemapLayer,
+    budgetTracker?: BudgetTracker,
   ) {
     // Create a transparent texture for the sprite
     const textureKey = 'tile-marker';
@@ -37,6 +40,7 @@ export class TileMarker extends Phaser.GameObjects.Sprite {
 
     this.map = map;
     this.groundLayer = groundLayer;
+    this.budgetTracker = budgetTracker ?? null;
 
     // Add the sprite to the scene
     scene.add.existing(this);
@@ -109,11 +113,12 @@ export class TileMarker extends Phaser.GameObjects.Sprite {
           clickedTile.rotation += TileMarker.ROTATION_STEP;
           this.lastTileRotation = clickedTile.rotation;
           this.scene.sound.play(KEY.SOUND.DRAW);
-        } else if (!clickedTile) {
+        } else if (!clickedTile && this.budgetTracker?.canDraw()) {
           const newTile = this.groundLayer
             .putTileAtWorldXY(TILE.ARROW, worldPoint.x, worldPoint.y)
             .setCollision(true);
           newTile.rotation = this.lastTileRotation;
+          this.budgetTracker.recordDraw();
           this.scene.sound.play(KEY.SOUND.DRAW);
         }
       } catch {
@@ -126,7 +131,11 @@ export class TileMarker extends Phaser.GameObjects.Sprite {
       ) as Phaser.Tilemaps.Tile | null;
 
       if (tile && tile.index !== TILE.PERMANENT) {
+        const wasArrow = tile.index === TILE.ARROW;
         this.groundLayer.removeTileAtWorldXY(worldPoint.x, worldPoint.y);
+        if (wasArrow) {
+          this.budgetTracker?.recordErase();
+        }
         this.scene.sound.play(KEY.SOUND.ERASE);
       }
     }
