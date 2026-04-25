@@ -12,11 +12,11 @@ export function HelpText({
   const scene = useScene();
   const [displayText, setDisplayText] = useState('');
 
-  if (!text) {
-    return null;
-  }
-
   useEffect(() => {
+    if (!text) {
+      return;
+    }
+
     let index = 0;
 
     const typewriterSound = scene.sound.add(KEY.SOUND.TYPEWRITER, {
@@ -43,6 +43,10 @@ export function HelpText({
       typewriterSound.destroy();
     };
   }, []);
+
+  if (!text) {
+    return null;
+  }
 
   return (
     <Text
