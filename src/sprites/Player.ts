@@ -45,7 +45,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     // Create run sound
     this.runSound = this.scene.sound.add(KEY.SOUND.RUN, {
       loop: true,
-      rate: 2,
+      rate: 2.5,
     });
   }
 
