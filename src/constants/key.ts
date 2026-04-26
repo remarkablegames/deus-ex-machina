@@ -5,8 +5,9 @@ export const IMAGE = {
 
 export const SCENE = {
   BOOT: 'BOOT',
-  MENU: 'MENU',
   MAIN: 'MAIN',
+  MENU: 'MENU',
+  SPLASH: 'SPLASH',
 } as const;
 
 export const SPRITESHEET = {

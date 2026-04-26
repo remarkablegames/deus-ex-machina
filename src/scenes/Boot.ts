@@ -47,7 +47,7 @@ export class Boot extends Scene {
     if (!isNaN(level) && level >= 0) {
       this.scene.start(KEY.SCENE.MAIN, { level });
     } else {
-      this.scene.start(KEY.SCENE.MENU);
+      this.scene.start(KEY.SCENE.SPLASH);
     }
   }
 }
