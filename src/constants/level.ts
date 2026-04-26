@@ -20,52 +20,66 @@ export const LEVELS: Level[] = [
     INDEX: 1,
     MUSIC: KEY.MUSIC.INTRO,
     TILEMAP: 'tilemaps/level1.json',
-    TEXT: 'Left-click arrow block to rotate it',
+    TEXT: 'Left-click arrow to rotate it',
   },
 
   {
     INDEX: 2,
     MUSIC: KEY.MUSIC.INTRO,
     TILEMAP: 'tilemaps/level2.json',
-    TEXT: 'Left-click to draw arrow block',
+    TEXT: 'Left-click to draw arrow',
   },
 
   {
     INDEX: 3,
-    MUSIC: KEY.MUSIC.CONTINUATION,
+    MUSIC: KEY.MUSIC.INTRO,
     TILEMAP: 'tilemaps/level3.json',
-    TEXT: 'There are a limited number of arrows',
-    BUDGET: 10,
+    TEXT: 'Watch out for spikes',
   },
 
   {
     INDEX: 4,
-    MUSIC: KEY.MUSIC.CONTINUATION,
+    MUSIC: KEY.MUSIC.INTRO,
     TILEMAP: 'tilemaps/level4.json',
     TEXT: 'Some blocks are permanent',
-    BUDGET: 30,
   },
 
   {
     INDEX: 5,
     MUSIC: KEY.MUSIC.CONTINUATION,
     TILEMAP: 'tilemaps/level5.json',
-    TEXT: 'Think outside the box',
-    BUDGET: 5,
+    TEXT: 'There are a limited number of arrows',
+    BUDGET: 10,
   },
 
   {
     INDEX: 6,
-    MUSIC: KEY.MUSIC.BACKGROUND,
+    MUSIC: KEY.MUSIC.CONTINUATION,
     TILEMAP: 'tilemaps/level6.json',
-    TEXT: 'Watch out for spikes',
+    TEXT: 'Fall and rise',
     BUDGET: 30,
   },
 
   {
     INDEX: 7,
-    MUSIC: KEY.MUSIC.BACKGROUND,
+    MUSIC: KEY.MUSIC.CONTINUATION,
     TILEMAP: 'tilemaps/level7.json',
+    TEXT: 'Think outside the box',
+    BUDGET: 5,
+  },
+
+  {
+    INDEX: 8,
+    MUSIC: KEY.MUSIC.BACKGROUND,
+    TILEMAP: 'tilemaps/level8.json',
+    TEXT: 'Tackle thorny issues',
+    BUDGET: 30,
+  },
+
+  {
+    INDEX: 9,
+    MUSIC: KEY.MUSIC.BACKGROUND,
+    TILEMAP: 'tilemaps/level9.json',
     TEXT: '',
     BUDGET: 30,
   },
