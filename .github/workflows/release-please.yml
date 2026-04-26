@@ -79,7 +79,10 @@ jobs:
           app-name: ${{ steps.vars.outputs.app_name }}
           app-version: ${{ env.VERSION }}
           window-title: ${{ steps.vars.outputs.window_title }}
+          window-width: 1280
+          window-height: 720
           icon-path: public/app-icon.png
+          frontend-dist: ../dist
         env:
           APPLE_SIGNING_IDENTITY: '-'
 
