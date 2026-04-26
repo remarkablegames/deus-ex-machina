@@ -23,10 +23,14 @@ new Game({
    */
   callbacks: {
     postBoot: () => {
-      const Wavedash = (window as unknown as { Wavedash: WavedashSDK })
-        .Wavedash;
-      Wavedash.updateLoadProgressZeroToOne(1);
-      Wavedash.init();
+      try {
+        const Wavedash = (window as unknown as { Wavedash: WavedashSDK })
+          .Wavedash;
+        Wavedash.updateLoadProgressZeroToOne(1);
+        Wavedash.init();
+      } catch {
+        // don't throw TypeError on non-Wavedash platforms
+      }
     },
   },
 
