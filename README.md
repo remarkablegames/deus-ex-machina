@@ -21,6 +21,8 @@ Play the game on:
 - [Wavedash](https://wavedash.com/games/deus-ex-machina)
 - [remarkablegames](https://remarkablegames.org/deus-ex-machina/)
 
+Read the [blog post](https://remarkablegames.org/posts/deus-ex-machina/).
+
 ## Credits
 
 - [Victor H (Music Composer)](https://vhsm3.itch.io/)
