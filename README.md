@@ -18,6 +18,7 @@ The title plays on the Latin phrase _deus ex machina_—literally "god from the 
 Play the game on:
 
 - [itch.io](https://remarkablegames.itch.io/deus-ex-machina)
+- [Wavedash](https://wavedash.com/games/deus-ex-machina)
 - [remarkablegames](https://remarkablegames.org/deus-ex-machina/)
 
 ## Credits
