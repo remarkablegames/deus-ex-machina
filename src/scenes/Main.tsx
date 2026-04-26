@@ -188,6 +188,8 @@ export class Main extends Phaser.Scene {
       this,
     );
 
+    this.spikeGroup.getChildren().forEach((spike) => uiBlockers.push(spike));
+
     this.tileMarker.setUIBlockers(uiBlockers);
 
     this.createDustParticles(map);
