@@ -7,8 +7,17 @@
 [![release](https://img.shields.io/github/v/release/remarkablegames/deus-ex-machina)](https://github.com/remarkablegames/deus-ex-machina/releases)
 [![build](https://github.com/remarkablegames/deus-ex-machina/actions/workflows/build.yml/badge.svg)](https://github.com/remarkablegames/deus-ex-machina/actions/workflows/build.yml)
 
+🔚 <kbd>Deus Ex Machina</kbd> is a puzzle-platformer where you play as the _"god in the machine"_, drawing and manipulating arrows to guide a robot through treacherous industrial levels.
+
+> _Guide the machine. Become the god._
+
+The game features a robot/player character that auto-walks through levels, and you must strategically place directional arrows (with limited resources) to navigate spikes, gaps, and obstacles.
+
+The title plays on the Latin phrase _deus ex machina_—literally "god from the machine"—referencing both the player's omniscient role in manipulating the game world and the industrial/robotic theme.
+
 Play the game on:
 
+- [itch.io](https://remarkablegames.itch.io/deus-ex-machina)
 - [remarkablegames](https://remarkablegames.org/deus-ex-machina/)
 
 ## Credits
