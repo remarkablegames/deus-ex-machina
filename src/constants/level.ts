@@ -80,7 +80,7 @@ export const LEVELS: Level[] = [
     INDEX: 9,
     MUSIC: KEY.MUSIC.BACKGROUND,
     TILEMAP: 'tilemaps/level9.json',
-    TEXT: '',
-    BUDGET: 30,
+    TEXT: 'Last level',
+    BUDGET: 10,
   },
 ];

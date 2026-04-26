@@ -313,13 +313,18 @@ export class Main extends Phaser.Scene {
 
   private handleWin(winPosition: { x: number; y: number }) {
     this.physics.world.removeCollider(this.spikeOverlap);
+    this.createWinParticles(winPosition.x, winPosition.y);
+    this.sound.play(KEY.SOUND.WIN);
+    this.cameras.main.fade(FADE_DURATION * 2, 0, 0, 0);
     const nextLevel = this.getNextLevel();
+
     if (nextLevel) {
-      this.createWinParticles(winPosition.x, winPosition.y);
-      this.sound.play(KEY.SOUND.WIN);
-      this.cameras.main.fade(FADE_DURATION * 2, 0, 0, 0);
       this.cameras.main.once('camerafadeoutcomplete', () => {
         this.scene.start(KEY.SCENE.MAIN, { level: nextLevel.INDEX });
+      });
+    } else {
+      this.cameras.main.once('camerafadeoutcomplete', () => {
+        this.scene.start(KEY.SCENE.MENU);
       });
     }
   }
