@@ -1,9 +1,10 @@
+import { WavedashSDK } from '@wvdsh/sdk-js';
 import { Game, Scale } from 'phaser';
 
 import * as scenes from './scenes';
 
 /**
- * https://rexrainbow.github.io/phaser3-rex-notes/docs/site/game/
+ * @see https://rexrainbow.github.io/phaser3-rex-notes/docs/site/game/
  */
 new Game({
   width: 1280,
@@ -11,10 +12,24 @@ new Game({
   title: 'Deus Ex Machina',
   url: import.meta.env.VITE_APP_HOMEPAGE,
   version: import.meta.env.VITE_APP_VERSION,
+
   scene: [
     scenes.Boot,
     ...Object.values(scenes).filter((scene) => scene !== scenes.Boot),
   ],
+
+  /**
+   * @see https://docs.wavedash.com/engines/phaser
+   */
+  callbacks: {
+    postBoot: () => {
+      const Wavedash = (window as unknown as { Wavedash: WavedashSDK })
+        .Wavedash;
+      Wavedash.updateLoadProgressZeroToOne(1);
+      Wavedash.init();
+    },
+  },
+
   physics: {
     default: 'arcade',
     arcade: {
@@ -25,11 +40,13 @@ new Game({
       debug: import.meta.env.DEV,
     },
   },
+
   disableContextMenu: true,
   backgroundColor: '#1d212d',
+  pixelArt: true,
+
   scale: {
     mode: Scale.FIT,
     autoCenter: Scale.CENTER_BOTH,
   },
-  pixelArt: true,
 });
