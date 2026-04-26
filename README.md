@@ -43,11 +43,6 @@ Install the dependencies:
 npm install
 ```
 
-Update the files:
-
-- [ ] `public/*.png`
-- [ ] `public/manifest.webmanifest`
-
 ## Environment Variables
 
 Update the environment variables:
