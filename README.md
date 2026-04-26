@@ -15,6 +15,7 @@ Play the game on:
 
 - [Victor H (Music Composer)](https://vhsm3.itch.io/)
 - [Mark (Programmer)](https://github.com/remarkablemark)
+- [16x16 Industrial Tileset](https://0x72.itch.io/16x16-industrial-tileset)
 - [Kenney Interface Sounds](https://kenney.nl/assets/interface-sounds)
 - [Menu SFX Pack](https://hitrison.itch.io/menu-sfx-pack)
 - [Typewriter Machine](https://pixabay.com/sound-effects/film-special-effects-typewriter-machine-64191/)
