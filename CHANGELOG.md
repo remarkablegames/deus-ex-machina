@@ -1,0 +1,24 @@
+# Changelog
+
+## 1.0.0 (2026-04-26)
+
+
+### Features
+
+* add tile budget feature ([8a043e7](https://github.com/remarkablegames/deus-ex-machina/commit/8a043e7a8c014b66f6c9354889a2fa951dd7cb48))
+* **components:** add reset button that clears drawn tiles ([a4f2de1](https://github.com/remarkablegames/deus-ex-machina/commit/a4f2de134f310ceefc566ee84158b3690fdae455))
+* **public:** update icon and logo ([2d04a4d](https://github.com/remarkablegames/deus-ex-machina/commit/2d04a4d69dbcaadd14394ae139d16a0a440bb36e))
+* **scenes:** add spikes to UI blockers in Main ([349aae4](https://github.com/remarkablegames/deus-ex-machina/commit/349aae47c6f6832a546fd2ed7743905c33e9323b))
+* **scenes:** add Splash screen ([41bad61](https://github.com/remarkablegames/deus-ex-machina/commit/41bad61318aeb52dd3a2d2dd469b1706b80a3f34))
+* **scenes:** display particles on win in Main ([f07fe14](https://github.com/remarkablegames/deus-ex-machina/commit/f07fe14d25b89e00c545a700385c918dbacffc70))
+* **scenes:** save and redraw tiles on Main restart ([fe973e7](https://github.com/remarkablegames/deus-ex-machina/commit/fe973e7c8111c537e683faf9745a4a119e9dee4d))
+* **tilemaps:** insert level1 ([8578e3b](https://github.com/remarkablegames/deus-ex-machina/commit/8578e3b0dbd94327054b21d255c38d38ff2b04cb))
+* **tilemaps:** insert level3 ([47789f8](https://github.com/remarkablegames/deus-ex-machina/commit/47789f83206b6f72df1efc01dbe40680d939a406))
+* **tilemaps:** insert level4 ([1ed7ce7](https://github.com/remarkablegames/deus-ex-machina/commit/1ed7ce7e804dcf70abd53b4b81a96f7172d7d524))
+* **tilemaps:** insert level5 ([5b80a58](https://github.com/remarkablegames/deus-ex-machina/commit/5b80a58ccf7b4d35cba684ad60581400ecda0a68))
+
+
+### Bug Fixes
+
+* **scenes:** remove spike overlap when player win ([f5b5d40](https://github.com/remarkablegames/deus-ex-machina/commit/f5b5d40f46db393ead672070319dd3af323f342a))
+* **tilemaps:** update level9 and go to Menu on last level win ([87f5c11](https://github.com/remarkablegames/deus-ex-machina/commit/87f5c11c20c3de42363373adaf0e0b4f91aa1df3))
