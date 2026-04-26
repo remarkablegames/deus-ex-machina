@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/remarkablegames/deus-ex-machina/compare/v1.0.0...v1.0.1) (2026-04-26)
+
+
+### Continuous Integration
+
+* **github:** fix tauri app in release-please.yml ([b84bbae](https://github.com/remarkablegames/deus-ex-machina/commit/b84bbaeac0292b976262d679a84dbe7a07bd1378))
+
 ## 1.0.0 (2026-04-26)
 
 
