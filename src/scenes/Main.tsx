@@ -22,6 +22,7 @@ export class Main extends Phaser.Scene {
   private groundLayer!: Phaser.Tilemaps.TilemapLayer;
   private player!: Player;
   private spikeGroup!: Phaser.Physics.Arcade.StaticGroup;
+  private spikeOverlap!: Phaser.Physics.Arcade.Collider;
   private tileMarker!: TileMarker;
   private isPlayerDead = false;
   private level!: Level;
@@ -192,6 +193,8 @@ export class Main extends Phaser.Scene {
 
     this.tileMarker.setUIBlockers(uiBlockers);
 
+    this.setupSpikeOverlap();
+
     this.createDustParticles(map);
     this.createLightRays(map);
   }
@@ -269,32 +272,47 @@ export class Main extends Phaser.Scene {
     });
     this.tileMarker.update();
 
-    // Kill the player if they fall off the map or touch a spike
-    if (
-      this.player.y > this.groundLayer.height ||
-      this.physics.world.overlap(this.player, this.spikeGroup)
-    ) {
-      // Flag that the player is dead so that we can stop update from running in the future
-      this.isPlayerDead = true;
-
-      this.sound.play(KEY.SOUND.LOSE);
-      this.cameras.main.shake(100, 0.01);
-      this.cameras.main.fade(FADE_DURATION, 0, 0, 0);
-
-      // Freeze the player to leave them on screen while fading but remove the marker immediately
-      this.player.freeze();
-
-      this.cameras.main.once('camerafadeoutcomplete', () => {
-        this.player.destroy();
-        this.scene.restart({
-          level: this.level.INDEX,
-          savedTiles: this.tileMarker.getDrawnTiles(),
-        });
-      });
+    // Kill the player if they fall off the map
+    if (this.player.y > this.groundLayer.height) {
+      this.killPlayer();
     }
   }
 
+  private setupSpikeOverlap(): void {
+    this.spikeOverlap = this.physics.add.overlap(
+      this.player,
+      this.spikeGroup,
+      () => {
+        this.physics.world.removeCollider(this.spikeOverlap);
+        this.killPlayer();
+      },
+    );
+  }
+
+  private killPlayer(): void {
+    if (this.isPlayerDead) {
+      return;
+    }
+
+    this.isPlayerDead = true;
+
+    this.sound.play(KEY.SOUND.LOSE);
+    this.cameras.main.shake(100, 0.01);
+    this.cameras.main.fade(FADE_DURATION, 0, 0, 0);
+
+    this.player.freeze();
+
+    this.cameras.main.once('camerafadeoutcomplete', () => {
+      this.player.destroy();
+      this.scene.restart({
+        level: this.level.INDEX,
+        savedTiles: this.tileMarker.getDrawnTiles(),
+      });
+    });
+  }
+
   private handleWin(winPosition: { x: number; y: number }) {
+    this.physics.world.removeCollider(this.spikeOverlap);
     const nextLevel = this.getNextLevel();
     if (nextLevel) {
       this.createWinParticles(winPosition.x, winPosition.y);
