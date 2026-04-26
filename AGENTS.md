@@ -70,6 +70,7 @@ src/
 ├── components/
 ├── constants/
 ├── graphics/
+├── index.ts # entrypoint
 ├── scenes/
 ├── sprites/
 ├── types/
