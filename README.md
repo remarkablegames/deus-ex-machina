@@ -101,5 +101,3 @@ To start the game at a specific level, append the `?level=` querystring paramete
 ```
 http://localhost:5173/?level=0
 ```
-
-If the index is out of range or omitted, the game defaults to level `0`.
