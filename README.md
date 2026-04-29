@@ -23,6 +23,17 @@ Play the game on:
 
 Read the [blog post](https://remarkablegames.org/posts/deus-ex-machina/).
 
+## How to Play
+
+- Left-click to draw an arrow block
+  - Left-click again to rotate it
+  - Some levels limit the number of arrows you can place
+- Right-click to erase a block
+- Some blocks are permanent
+- Avoid the spikes
+- Reach the orb to win
+- Press "R" to restart the level
+
 ## Credits
 
 - [Victor H (Music Composer)](https://vhsm3.itch.io/)
