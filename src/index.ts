@@ -1,4 +1,4 @@
-import { WavedashSDK } from '@wvdsh/sdk-js';
+import type { WavedashSDK } from '@wvdsh/sdk-js';
 import { Game, Scale } from 'phaser';
 
 import * as scenes from './scenes';
