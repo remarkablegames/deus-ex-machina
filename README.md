@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/logo192.png" alt="Deus Ex Machina">
+  <img src="public/splash.gif" width="300" alt="Deus Ex Machina">
 </p>
 
 # Deus Ex Machina
