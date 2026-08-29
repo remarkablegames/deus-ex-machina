@@ -1,4 +1,3 @@
-import type { WavedashSDK } from '@wvdsh/sdk-js';
 import { Game, Scale } from 'phaser';
 
 import * as scenes from './scenes';
@@ -20,15 +19,6 @@ new Game({
 
   callbacks: {
     postBoot: () => {
-      try {
-        const Wavedash = (window as unknown as { Wavedash: WavedashSDK })
-          .Wavedash;
-        Wavedash.updateLoadProgressZeroToOne(1);
-        Wavedash.init();
-      } catch {
-        // don't throw TypeError on non-Wavedash platforms
-      }
-
       try {
         screen.orientation.lock('landscape').catch(() => {
           // ignore unsupported browsers
