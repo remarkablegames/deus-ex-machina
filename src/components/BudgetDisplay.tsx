@@ -1,6 +1,6 @@
 import { Container, Text, useEffect, useScene, useState } from 'phaser-jsx';
 
-import { BudgetTracker } from '../utils/BudgetTracker';
+import { BudgetTracker, isMobile } from '../utils';
 import { Button } from './Button';
 
 interface BudgetDisplayProps {
@@ -45,20 +45,22 @@ export function BudgetDisplay({
         ref={ref}
       />
 
-      <Button
-        x={x}
-        y={52}
-        text="Reset"
-        onClick={onReset}
-        style={{
-          fontSize: 18,
-          fontFamily: 'monospace',
-          padding: { x: 15, y: 10 },
-        }}
-        originX={1}
-        originY={0}
-        ref={ref}
-      />
+      {!isMobile() && (
+        <Button
+          x={x}
+          y={52}
+          text="Reset"
+          onClick={onReset}
+          style={{
+            fontSize: 18,
+            fontFamily: 'monospace',
+            padding: { x: 15, y: 10 },
+          }}
+          originX={1}
+          originY={0}
+          ref={ref}
+        />
+      )}
     </Container>
   );
 }

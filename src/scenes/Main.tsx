@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
-import { Container, render } from 'phaser-jsx';
+import { Container, Fragment, render } from 'phaser-jsx';
 
-import { BudgetDisplay, HelpText } from '../components';
+import { BudgetDisplay, HelpText, MobileToolbar } from '../components';
 import {
   KEY,
   type Level,
@@ -11,9 +11,9 @@ import {
   TILEMAP_OBJECT,
   TILESET_NAME,
 } from '../constants';
-import { TileMarker } from '../graphics';
+import { type EditMode, TileMarker } from '../graphics';
 import { Player } from '../sprites';
-import { BudgetTracker, getPlayerConveyorVelocity } from '../utils';
+import { BudgetTracker, getPlayerConveyorVelocity, isMobile } from '../utils';
 
 const FADE_DURATION = 200;
 const DUST_SPEED = 5;
@@ -29,6 +29,14 @@ export class Main extends Phaser.Scene {
   private dustParticles!: Phaser.GameObjects.Particles.ParticleEmitter;
   private budgetTracker!: BudgetTracker;
   private savedTiles?: { x: number; y: number; rotation: number }[];
+  private editMode: EditMode = 'pan';
+  private isMobileDevice = isMobile();
+  private isPanning = false;
+  private isPinching = false;
+  private pointerStart?: { x: number; y: number; time: number };
+  private lastPanWorldPoint?: Phaser.Math.Vector2;
+  private pinchStartDistance = 0;
+  private pinchStartZoom = 1;
 
   constructor() {
     super(KEY.SCENE.MAIN);
@@ -153,6 +161,7 @@ export class Main extends Phaser.Scene {
     const zoom = Math.min(zoomX, zoomY);
     this.cameras.main.setZoom(zoom);
     this.cameras.main.centerOn(map.widthInPixels / 2, map.heightInPixels / 2);
+    this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
     this.budgetTracker = new BudgetTracker(this.level.BUDGET ?? Infinity);
     this.tileMarker = new TileMarker(
@@ -164,40 +173,73 @@ export class Main extends Phaser.Scene {
     );
 
     this.input.keyboard?.on('keydown-R', () => {
-      this.sound.play(KEY.SOUND.LOSE);
-      this.cameras.main.fade(FADE_DURATION, 0, 0, 0);
-      this.cameras.main.once('camerafadeoutcomplete', () => {
-        this.scene.restart({
-          level: this.level.INDEX,
-          savedTiles: this.tileMarker.getDrawnTiles(),
-        });
-      });
+      this.restartLevel();
     });
 
+    this.editMode = 'pan';
+    this.tileMarker.setEditMode(this.editMode);
+
     const uiBlockers: Phaser.GameObjects.GameObject[] = [];
-    const collectUIBlocker = (go: Phaser.GameObjects.GameObject) => {
-      uiBlockers.push(go);
+    const collectUIBlocker = (gameObject: Phaser.GameObjects.GameObject) => {
+      uiBlockers.push(gameObject);
+
+      if (this.isMobileDevice) {
+        if (gameObject.type === 'Text') {
+          (gameObject as unknown as Phaser.GameObjects.Text).setScale(1.5);
+        }
+      }
     };
 
     render(
-      <Container y={16}>
-        <HelpText text={this.level.TEXT} ref={collectUIBlocker} />
-        {this.level.BUDGET !== undefined && (
-          <BudgetDisplay
-            budgetTracker={this.budgetTracker}
-            onReset={() => {
-              this.tileMarker.resetDrawnTiles();
+      <Fragment>
+        <Container y={16}>
+          <HelpText text={this.level.TEXT} ref={collectUIBlocker} />
+          {this.level.BUDGET !== undefined && (
+            <BudgetDisplay
+              budgetTracker={this.budgetTracker}
+              onReset={() => {
+                this.tileMarker.resetDrawnTiles();
+              }}
+              ref={collectUIBlocker}
+            />
+          )}
+        </Container>
+        {this.isMobileDevice && (
+          <MobileToolbar
+            onModeChange={(mode) => {
+              this.editMode = mode;
+              this.tileMarker.setEditMode(mode);
+            }}
+            onRestart={() => {
+              this.restartLevel();
             }}
             ref={collectUIBlocker}
           />
         )}
-      </Container>,
+      </Fragment>,
       this,
     );
 
     this.spikeGroup.getChildren().forEach((spike) => uiBlockers.push(spike));
 
     this.tileMarker.setUIBlockers(uiBlockers);
+
+    if (this.isMobileDevice) {
+      // prevent Safari iOS from consuming the touch events and to support multi-touch
+      this.input.addPointer(9);
+
+      this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
+        this.handlePointerDown(pointer);
+      });
+
+      this.input.on('pointerup', (pointer: Phaser.Input.Pointer) => {
+        this.handlePointerUp(pointer);
+      });
+
+      this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
+        this.handlePointerMove(pointer);
+      });
+    }
 
     this.setupSpikeOverlap();
 
@@ -357,5 +399,144 @@ export class Main extends Phaser.Scene {
 
   private getNextLevel(): Level | null {
     return LEVELS[this.level.INDEX + 1] ?? null;
+  }
+
+  private restartLevel(): void {
+    this.sound.play(KEY.SOUND.LOSE);
+    this.cameras.main.fade(FADE_DURATION, 0, 0, 0);
+    this.cameras.main.once('camerafadeoutcomplete', () => {
+      this.scene.restart({
+        level: this.level.INDEX,
+        savedTiles: this.tileMarker.getDrawnTiles(),
+      });
+    });
+  }
+
+  private handlePointerDown(pointer: Phaser.Input.Pointer): void {
+    if (this.tileMarker.isPointerOverUI(pointer)) {
+      return;
+    }
+
+    this.pointerStart = { x: pointer.x, y: pointer.y, time: this.time.now };
+
+    const activePointers = this.input.manager.pointers.filter((p) => p.isDown);
+
+    if (activePointers.length === 2) {
+      this.isPanning = false;
+      this.isPinching = true;
+      this.pinchStartZoom = this.cameras.main.zoom;
+      this.pinchStartDistance = Phaser.Math.Distance.Between(
+        activePointers[0].x,
+        activePointers[0].y,
+        activePointers[1].x,
+        activePointers[1].y,
+      );
+    }
+  }
+
+  private handlePointerUp(pointer: Phaser.Input.Pointer): void {
+    if (this.tileMarker.isPointerOverUI(pointer)) {
+      this.isPanning = false;
+      this.isPinching = false;
+      this.pointerStart = undefined;
+      this.lastPanWorldPoint = undefined;
+      return;
+    }
+
+    if (this.isPinching) {
+      this.isPinching = false;
+      this.pointerStart = undefined;
+      return;
+    }
+
+    if (
+      !this.isPanning &&
+      this.pointerStart &&
+      this.time.now - this.pointerStart.time < 300 &&
+      Phaser.Math.Distance.Between(
+        pointer.x,
+        pointer.y,
+        this.pointerStart.x,
+        this.pointerStart.y,
+      ) < 20
+    ) {
+      const worldPoint = pointer.positionToCamera(
+        this.cameras.main,
+      ) as Phaser.Math.Vector2;
+      this.tileMarker.handleTap({ x: worldPoint.x, y: worldPoint.y });
+    }
+
+    this.isPanning = false;
+    this.pointerStart = undefined;
+    this.lastPanWorldPoint = undefined;
+  }
+
+  private handlePointerMove(pointer: Phaser.Input.Pointer): void {
+    if (this.isPinching) {
+      const activePointers = this.input.manager.pointers.filter(
+        (p) => p.isDown,
+      );
+      if (activePointers.length < 2) {
+        this.isPinching = false;
+        return;
+      }
+
+      const currentDistance = Phaser.Math.Distance.Between(
+        activePointers[0].x,
+        activePointers[0].y,
+        activePointers[1].x,
+        activePointers[1].y,
+      );
+
+      const newZoom =
+        this.pinchStartZoom * (currentDistance / this.pinchStartDistance);
+      const minZoom = this.cameras.main.width / this.groundLayer.width;
+      const maxZoom = 3;
+      this.cameras.main.setZoom(Phaser.Math.Clamp(newZoom, minZoom, maxZoom));
+      return;
+    }
+
+    if (!pointer.isDown) {
+      return;
+    }
+
+    if (this.tileMarker.isPointerOverUI(pointer)) {
+      return;
+    }
+
+    const worldPoint = pointer.positionToCamera(
+      this.cameras.main,
+    ) as Phaser.Math.Vector2;
+
+    if (this.editMode === 'place' || this.editMode === 'erase') {
+      this.tileMarker.handleTap({ x: worldPoint.x, y: worldPoint.y });
+      return;
+    }
+
+    if (this.editMode !== 'pan') {
+      return;
+    }
+
+    if (
+      this.pointerStart &&
+      !this.isPanning &&
+      Phaser.Math.Distance.Between(
+        pointer.x,
+        pointer.y,
+        this.pointerStart.x,
+        this.pointerStart.y,
+      ) < 10
+    ) {
+      return;
+    }
+
+    this.isPanning = true;
+
+    if (this.lastPanWorldPoint) {
+      this.cameras.main.scrollX -= worldPoint.x - this.lastPanWorldPoint.x;
+      this.cameras.main.scrollY -= worldPoint.y - this.lastPanWorldPoint.y;
+    }
+
+    this.lastPanWorldPoint = worldPoint;
   }
 }

@@ -1,7 +1,9 @@
 import Phaser from 'phaser';
 
 import { KEY, TILE } from '../constants';
-import { BudgetTracker } from '../utils';
+import { BudgetTracker, isMobile } from '../utils';
+
+export type EditMode = 'pan' | 'place' | 'rotate' | 'erase';
 
 const TINT_COLOR = 0xff8000;
 const OUTLINE_OUTER_COLOR = 0xffffff;
@@ -21,6 +23,8 @@ export class TileMarker extends Phaser.GameObjects.Sprite {
   private budgetTracker: BudgetTracker | null;
   private drawnTiles: { x: number; y: number; rotation: number }[] = [];
   private uiBlockers: Phaser.GameObjects.GameObject[] = [];
+  private editMode: EditMode = 'place';
+  private isMobileDevice = isMobile();
 
   constructor(
     scene: Phaser.Scene,
@@ -56,6 +60,11 @@ export class TileMarker extends Phaser.GameObjects.Sprite {
     // Create outline graphics
     this.outline = scene.add.graphics();
     this.drawOutline();
+
+    if (this.isMobileDevice) {
+      this.setVisible(false);
+      this.outline.setVisible(false);
+    }
   }
 
   private drawOutline(): void {
@@ -67,6 +76,10 @@ export class TileMarker extends Phaser.GameObjects.Sprite {
   }
 
   update() {
+    if (this.isMobileDevice) {
+      return;
+    }
+
     // Skip input processing during initial delay to prevent accidental tile draw
     // when transitioning from menu (mouse button still down from clicking Start)
     if (this.inputDelay > 0) {
@@ -169,8 +182,76 @@ export class TileMarker extends Phaser.GameObjects.Sprite {
     this.uiBlockers = objects;
   }
 
-  private isPointerOverUI(): boolean {
-    const { x, y } = this.scene.input.manager.activePointer;
+  setEditMode(mode: EditMode): void {
+    this.editMode = mode;
+  }
+
+  handleTap(worldPoint: { x: number; y: number }): void {
+    if (this.isPointerOverUI()) {
+      return;
+    }
+
+    try {
+      const tile = this.groundLayer.getTileAtWorldXY(
+        worldPoint.x,
+        worldPoint.y,
+      ) as Phaser.Tilemaps.Tile | null;
+
+      switch (this.editMode) {
+        case 'place': {
+          if (!tile && this.budgetTracker?.canDraw()) {
+            const newTile = this.groundLayer
+              .putTileAtWorldXY(TILE.ARROW, worldPoint.x, worldPoint.y)
+              .setCollision(true);
+            newTile.rotation = this.lastTileRotation;
+            this.drawnTiles.push({
+              x: newTile.x,
+              y: newTile.y,
+              rotation: newTile.rotation,
+            });
+            this.budgetTracker.recordDraw();
+            this.scene.sound.play(KEY.SOUND.DRAW);
+          }
+          break;
+        }
+
+        case 'rotate': {
+          if (tile?.index === TILE.ARROW) {
+            tile.rotation += TileMarker.ROTATION_STEP;
+            this.lastTileRotation = tile.rotation;
+            const existingTile = this.drawnTiles.find(
+              (t) => t.x === tile.x && t.y === tile.y,
+            );
+            if (existingTile) {
+              existingTile.rotation = tile.rotation;
+            }
+            this.scene.sound.play(KEY.SOUND.DRAW);
+          }
+          break;
+        }
+
+        case 'erase': {
+          if (tile?.index !== undefined && tile.index !== TILE.PERMANENT) {
+            const wasArrow = tile.index === TILE.ARROW;
+            this.groundLayer.removeTileAtWorldXY(worldPoint.x, worldPoint.y);
+            if (wasArrow) {
+              this.drawnTiles = this.drawnTiles.filter(
+                (t) => t.x !== tile.x || t.y !== tile.y,
+              );
+              this.budgetTracker?.recordErase();
+            }
+            this.scene.sound.play(KEY.SOUND.ERASE);
+          }
+          break;
+        }
+      }
+    } catch {
+      // don't draw tile if outside of game world
+    }
+  }
+
+  isPointerOverUI(pointer = this.scene.input.manager.activePointer): boolean {
+    const { x, y } = pointer;
     const camera = this.scene.cameras.main;
 
     for (const obj of this.uiBlockers) {

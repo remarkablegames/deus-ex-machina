@@ -18,9 +18,6 @@ new Game({
     ...Object.values(scenes).filter((scene) => scene !== scenes.Boot),
   ],
 
-  /**
-   * @see https://docs.wavedash.com/engines/phaser
-   */
   callbacks: {
     postBoot: () => {
       try {
@@ -30,6 +27,14 @@ new Game({
         Wavedash.init();
       } catch {
         // don't throw TypeError on non-Wavedash platforms
+      }
+
+      try {
+        screen.orientation.lock('landscape').catch(() => {
+          // ignore unsupported browsers
+        });
+      } catch {
+        // ignore missing screen.orientation API
       }
     },
   },
@@ -46,6 +51,11 @@ new Game({
   },
 
   disableContextMenu: true,
+  input: {
+    touch: {
+      capture: true,
+    },
+  },
   backgroundColor: '#1d212d',
   pixelArt: true,
 

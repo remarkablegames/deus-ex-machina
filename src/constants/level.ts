@@ -1,4 +1,5 @@
 import { KEY } from '../constants';
+import { isMobile } from '../utils';
 
 export interface Level {
   INDEX: number;
@@ -14,7 +15,9 @@ export const LEVELS: Level[] = [
     MUSIC: KEY.MUSIC.INTRO,
     TILEMAP: 'tilemaps/level0.json',
     get TEXT() {
-      return 'Right-click to erase block';
+      return isMobile()
+        ? 'Tap "Erase" button and then a tile to remove it'
+        : 'Right-click to erase block';
     },
   },
 
@@ -23,7 +26,9 @@ export const LEVELS: Level[] = [
     MUSIC: KEY.MUSIC.INTRO,
     TILEMAP: 'tilemaps/level1.json',
     get TEXT() {
-      return 'Left-click arrow to rotate it';
+      return isMobile()
+        ? 'Tap "Rotate" button and then an arrow to turn it'
+        : 'Left-click arrow to rotate it';
     },
   },
 
@@ -32,7 +37,9 @@ export const LEVELS: Level[] = [
     MUSIC: KEY.MUSIC.INTRO,
     TILEMAP: 'tilemaps/level2.json',
     get TEXT() {
-      return 'Left-click to draw arrow';
+      return isMobile()
+        ? 'Tap "Place" button and then a tile to draw an arrow'
+        : 'Left-click to draw arrow';
     },
   },
 
