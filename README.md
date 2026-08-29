@@ -36,10 +36,10 @@ Read the [blog post](https://remarkablegames.org/posts/deus-ex-machina/).
 
 ## How to Play
 
-- Left-click to draw an arrow block
-  - Left-click again to rotate it
+- Left-click to draw an arrow
+  - Left-click an arrow to rotate it
   - Some levels limit the number of arrows you can place
-- Right-click to erase a block
+- Right-click to erase an arrow
   - Some blocks are permanent
 - Avoid the spikes
 - Reach the orb to win

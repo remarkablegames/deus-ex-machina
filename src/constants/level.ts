@@ -16,8 +16,8 @@ export const LEVELS: Level[] = [
     TILEMAP: 'tilemaps/level0.json',
     get TEXT() {
       return isMobile()
-        ? 'Tap "Erase" button and then a tile to remove it'
-        : 'Right-click to erase block';
+        ? 'Select "Erase" and tap a block to remove it'
+        : 'Right-click to erase a block';
     },
   },
 
@@ -27,8 +27,8 @@ export const LEVELS: Level[] = [
     TILEMAP: 'tilemaps/level1.json',
     get TEXT() {
       return isMobile()
-        ? 'Tap "Rotate" button and then an arrow to turn it'
-        : 'Left-click arrow to rotate it';
+        ? 'Select "Rotate" and tap an arrow to turn it'
+        : 'Left-click an arrow to rotate it';
     },
   },
 
@@ -38,8 +38,8 @@ export const LEVELS: Level[] = [
     TILEMAP: 'tilemaps/level2.json',
     get TEXT() {
       return isMobile()
-        ? 'Tap "Place" button and then a tile to draw an arrow'
-        : 'Left-click to draw arrow';
+        ? 'Select "Place" and tap to draw an arrow'
+        : 'Left-click to draw an arrow';
     },
   },
 
