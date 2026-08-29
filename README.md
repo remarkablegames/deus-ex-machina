@@ -26,7 +26,7 @@ Read the [blog post](https://remarkablegames.org/posts/deus-ex-machina/).
 ## Features
 
 - Puzzle-platformer gameplay: draw arrows to guide a robot through levels
-- Rotate and erase arrow blocks with limited arrows on select levels
+- Rotate and erase arrows/blocks with limited arrows on select levels
 - Restart the current level by pressing `R`
 - Mobile support:
   - Touch toolbar with Pan, Place, Rotate, Erase, and Restart
@@ -39,7 +39,7 @@ Read the [blog post](https://remarkablegames.org/posts/deus-ex-machina/).
 - Left-click to draw an arrow
   - Left-click an arrow to rotate it
   - Some levels limit the number of arrows you can place
-- Right-click to erase an arrow
+- Right-click to erase a block
   - Some blocks are permanent
 - Avoid the spikes
 - Reach the orb to win
