@@ -17,6 +17,8 @@ import { BudgetTracker, getPlayerConveyorVelocity, isMobile } from '../utils';
 
 const FADE_DURATION = 200;
 const DUST_SPEED = 5;
+const DEATH_LOOP_WINDOW_MS = 1500;
+const DEATH_LOOP_MAX_COUNT = 3;
 
 export class Main extends Phaser.Scene {
   private groundLayer!: Phaser.Tilemaps.TilemapLayer;
@@ -25,6 +27,8 @@ export class Main extends Phaser.Scene {
   private spikeOverlap!: Phaser.Physics.Arcade.Collider;
   private tileMarker!: TileMarker;
   private isPlayerDead = false;
+  private lastDeathTime = -Infinity;
+  private rapidDeathCount = 0;
   private level!: Level;
   private dustParticles!: Phaser.GameObjects.Particles.ParticleEmitter;
   private budgetTracker!: BudgetTracker;
@@ -348,6 +352,16 @@ export class Main extends Phaser.Scene {
 
     this.isPlayerDead = true;
 
+    const now = this.time.now;
+    if (now - this.lastDeathTime <= DEATH_LOOP_WINDOW_MS) {
+      this.rapidDeathCount++;
+    } else {
+      this.rapidDeathCount = 1;
+    }
+    this.lastDeathTime = now;
+
+    const hardReset = this.rapidDeathCount >= DEATH_LOOP_MAX_COUNT;
+
     this.sound.play(KEY.SOUND.LOSE);
     this.cameras.main.shake(100, 0.01);
     this.cameras.main.fade(FADE_DURATION, 0, 0, 0);
@@ -358,7 +372,7 @@ export class Main extends Phaser.Scene {
       this.player.destroy();
       this.scene.restart({
         level: this.level.INDEX,
-        savedTiles: this.tileMarker.getDrawnTiles(),
+        savedTiles: hardReset ? undefined : this.tileMarker.getDrawnTiles(),
       });
     });
   }
