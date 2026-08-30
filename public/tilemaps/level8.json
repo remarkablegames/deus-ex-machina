@@ -178,7 +178,7 @@
           "visible": true,
           "width": 0,
           "x": 656,
-          "y": 478
+          "y": 462
         },
         {
           "height": 0,
@@ -205,7 +205,7 @@
   "nextobjectid": 9,
   "orientation": "orthogonal",
   "renderorder": "right-down",
-  "tiledversion": "1.12.1",
+  "tiledversion": "1.12.2",
   "tileheight": 32,
   "tilesets": [
     {

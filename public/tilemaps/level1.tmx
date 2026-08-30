@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="40" height="22" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#1d212d" nextlayerid="5" nextobjectid="9">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="40" height="22" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#1d212d" nextlayerid="5" nextobjectid="9">
  <editorsettings>
   <export target="level1.json" format="json"/>
  </editorsettings>
@@ -437,7 +437,7 @@
 </data>
  </layer>
  <objectgroup id="4" name="Objects">
-  <object id="1" name="Spawn" x="496" y="318">
+  <object id="1" name="Spawn" x="496" y="300">
    <point/>
   </object>
   <object id="8" name="Win" x="783" y="272">
