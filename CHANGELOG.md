@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.0](https://github.com/remarkablegames/deus-ex-machina/compare/v1.0.1...v1.1.0) (2026-08-30)
+
+
+### Features
+
+* add Clear button to MobileToolbar ([d17e024](https://github.com/remarkablegames/deus-ex-machina/commit/d17e02401082558df053f39a5aa34956a1a8b305))
+* add mobile support ([c84a236](https://github.com/remarkablegames/deus-ex-machina/commit/c84a236d5736fdb13fa96baaf4178eafd1c05fcd))
+
+
+### Bug Fixes
+
+* improve level text for mobile ([3c9f329](https://github.com/remarkablegames/deus-ex-machina/commit/3c9f329a90a9e59ddd0b9942c4d53dc7517dc290))
+
 ## [1.0.1](https://github.com/remarkablegames/deus-ex-machina/compare/v1.0.0...v1.0.1) (2026-04-26)
 
 
