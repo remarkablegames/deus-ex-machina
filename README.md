@@ -21,7 +21,7 @@ Play the game on:
 - [itch.io](https://remarkablegames.itch.io/deus-ex-machina)
 - [remarkablegames](https://remarkablegames.org/deus-ex-machina/)
 
-Read the [blog post](https://remarkablegames.org/posts/deus-ex-machina/).
+Read the [blog post](https://remarkablegames.org/posts/deus-ex-machina/) or watch the [YouTube Short](https://youtube.com/shorts/SY6klRdZlLQ).
 
 ## Features
 
