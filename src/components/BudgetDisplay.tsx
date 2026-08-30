@@ -5,13 +5,13 @@ import { Button } from './Button';
 
 interface BudgetDisplayProps {
   budgetTracker: BudgetTracker;
-  onReset: () => void;
+  onClear: () => void;
   ref?: (gameObject: Phaser.GameObjects.GameObject) => void;
 }
 
 export function BudgetDisplay({
   budgetTracker,
-  onReset,
+  onClear,
   ref,
 }: BudgetDisplayProps) {
   const scene = useScene();
@@ -49,8 +49,8 @@ export function BudgetDisplay({
         <Button
           x={x}
           y={52}
-          text="Reset"
-          onClick={onReset}
+          text="Clear"
+          onClick={onClear}
           style={{
             fontSize: 18,
             fontFamily: 'monospace',

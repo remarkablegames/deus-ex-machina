@@ -197,13 +197,14 @@ export class Main extends Phaser.Scene {
           {this.level.BUDGET !== undefined && (
             <BudgetDisplay
               budgetTracker={this.budgetTracker}
-              onReset={() => {
-                this.tileMarker.resetDrawnTiles();
+              onClear={() => {
+                this.tileMarker.clearDrawnTiles();
               }}
               ref={collectUIBlocker}
             />
           )}
         </Container>
+
         {this.isMobileDevice && (
           <MobileToolbar
             onModeChange={(mode) => {

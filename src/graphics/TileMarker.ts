@@ -277,7 +277,7 @@ export class TileMarker extends Phaser.GameObjects.Sprite {
     return false;
   }
 
-  resetDrawnTiles(): void {
+  clearDrawnTiles(): void {
     for (const { x, y } of this.drawnTiles) {
       this.groundLayer.removeTileAt(x, y);
     }
