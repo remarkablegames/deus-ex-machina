@@ -25,6 +25,7 @@ const HANDLE_STYLE: Phaser.Types.GameObjects.Text.TextStyle = {
 
 interface MobileToolbarProps {
   onModeChange: (mode: EditMode) => void;
+  onClear: () => void;
   onRestart: () => void;
   ref?: (gameObject: Phaser.GameObjects.GameObject) => void;
 }
@@ -35,11 +36,13 @@ const BUTTON_WIDTHS = [
   BUTTON_CHARACTER_WIDTH * 5.3,
   BUTTON_CHARACTER_WIDTH * 6.2,
   BUTTON_CHARACTER_WIDTH * 5.3,
-  BUTTON_CHARACTER_WIDTH * 7,
+  BUTTON_CHARACTER_WIDTH * 5.3,
+  BUTTON_CHARACTER_WIDTH * 6.8,
 ];
 
 export function MobileToolbar({
   onModeChange,
+  onClear,
   onRestart,
   ref,
 }: MobileToolbarProps) {
@@ -97,6 +100,19 @@ export function MobileToolbar({
 
       <Text
         x={positions[4]}
+        text="Clear"
+        style={INACTIVE_STYLE}
+        originX={0.5}
+        originY={0.5}
+        input={{ cursor: 'pointer' }}
+        onPointerDown={() => {
+          scene.sound.play(KEY.SOUND.CLICK);
+          onClear();
+        }}
+      />
+
+      <Text
+        x={positions[5]}
         text="Restart"
         style={INACTIVE_STYLE}
         originX={0.5}

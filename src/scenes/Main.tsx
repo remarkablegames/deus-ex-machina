@@ -211,6 +211,9 @@ export class Main extends Phaser.Scene {
               this.editMode = mode;
               this.tileMarker.setEditMode(mode);
             }}
+            onClear={() => {
+              this.tileMarker.clearDrawnTiles();
+            }}
             onRestart={() => {
               this.restartLevel();
             }}
