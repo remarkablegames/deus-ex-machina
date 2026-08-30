@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.1](https://github.com/remarkablegames/deus-ex-machina/compare/v1.1.0...v1.1.1) (2026-08-30)
+
+
+### Bug Fixes
+
+* reset level on infinite death loop ([1517d15](https://github.com/remarkablegames/deus-ex-machina/commit/1517d154b7e8649e61abe75f73ac9aa3736729dd))
+* **tilemaps:** move spawn object y-coordinate up if below an up arrow ([468ae7e](https://github.com/remarkablegames/deus-ex-machina/commit/468ae7ef5aacabda81c590dacf6a2ecb2542185c))
+
 ## [1.1.0](https://github.com/remarkablegames/deus-ex-machina/compare/v1.0.1...v1.1.0) (2026-08-30)
 
 
